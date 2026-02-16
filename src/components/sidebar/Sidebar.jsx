@@ -5,26 +5,35 @@ import { NavLink, useLocation } from "react-router-dom";
 
 export default function Sidebar({ collapsed, onToggle, onLogoutClick }) {
   const location = useLocation();
-  const [selected, setSelected] = useState("overview");
+  const [selected, setSelected] = useState("dashboard");
 
   useEffect(() => {
     const path = location.pathname || "/";
-    if (path === "/" || path.startsWith("/overview")) setSelected("overview");
-    else if (path.startsWith("/profile")) setSelected("profile");
-    else if (path.startsWith("/outreach")) setSelected("outreach");
-    else if (path.startsWith("/investor-inquiries")) setSelected("investor-inquiries");
+    if (path === "/" || path.startsWith("/overview")) setSelected("dashboard");
+    else if (path.startsWith("/startups")) setSelected("startups");
+    else if (path.startsWith("/investors")) setSelected("investors");
     else if (path.startsWith("/funding")) setSelected("funding");
-    else if (path.startsWith("/documents")) setSelected("documents");
-    else if (path.startsWith("/messages")) setSelected("messages");
+    else if (path.startsWith("/deal")) setSelected("deal");
+    else if (path.startsWith("/compliance")) setSelected("compliance");
+    else if (path.startsWith("/reports")) setSelected("reports");
+    else if (path.startsWith("/tokenization")) setSelected("tokenization");
+    else if (path.startsWith("/metaverse")) setSelected("metaverse");
+    else if (path.startsWith("/zakat")) setSelected("zakat");
+    else if (path.startsWith("/investor-network")) setSelected("investor-network");
+    else if (path.startsWith("/settings")) setSelected("settings");
     else setSelected("");
   }, [location.pathname]);
 
   return (
     <aside className={`em-sidebar ${collapsed ? "em-sidebar--collapsed" : ""}`}>
       <div className="em-sidebar-header">
-        <div className="em-sidebar-logo">
-          <img src={logo} alt="Emireq" className="em-sidebar-logo-img" />
-        </div>
+         <div className="em-sidebar-logo">
+  <img
+    src={logo}
+    alt="Emireq"
+    className="em-sidebar-logo-img"
+  />
+</div>
 
         <button
           className="em-sidebar-toggle"
@@ -32,23 +41,23 @@ export default function Sidebar({ collapsed, onToggle, onLogoutClick }) {
           aria-label="Toggle sidebar"
         >
           <svg
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M6 16L1 11L6 6"
-              stroke="#121212"
-              strokeWidth="1.5"
+              d="M11 19L4 12L11 5"
+              stroke="currentColor"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
             <path
-              d="M13 16L8 11L13 6"
-              stroke="#121212"
-              strokeWidth="1.5"
+              d="M19 19L12 12L19 5"
+              stroke="currentColor"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -56,169 +65,306 @@ export default function Sidebar({ collapsed, onToggle, onLogoutClick }) {
         </button>
       </div>
 
-      <div className="em-sidebar-section">
-        <p className="em-sidebar-title">MAIN</p>
+      <div className="em-sidebar-content">
+        <div className="em-sidebar-section">
+          <p className="em-sidebar-title">MAIN</p>
 
-        <NavLink
-          to="/overview"
-          end
-          onClick={() => setSelected("overview")}
-          className={({ isActive }) =>
-            `em-sidebar-item ${(isActive || selected === "overview") ? "active" : ""}`
-          }
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.33333 2.66667V11.6667C2.33333 12.1971 2.54405 12.7058 2.91912 13.0809C3.29419 13.456 3.8029 13.6667 4.33333 13.6667H13.3333" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M4.33329 10.0001L7.33329 7.00005L9.66662 9.33338L13.3333 5.66672" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span>Overview</span>
-        </NavLink>
+          <NavLink
+            to="/overview"
+            end
+            onClick={() => setSelected("dashboard")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "dashboard") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.66667 2H2V6.66667H6.66667V2Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 2H9.33331V6.66667H14V2Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 9.33331H9.33331V14H14V9.33331Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.66667 9.33331H2V14H6.66667V9.33331Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 
-        <NavLink
-          to="/profile"
-          end
-          onClick={() => setSelected("profile")}
-          className={({ isActive }) =>
-            `em-sidebar-item ${(isActive || selected === "profile") ? "active" : ""}`
-          }
-        >
+            <span>Dashboard</span>
+          </NavLink>
+
+          <NavLink
+            to="/startups"
+            end
+            onClick={() => setSelected("startups")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "startups") ? "active" : ""}`
+            }
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_383_8)">
+<path d="M4 14.6666V2.66665C4 2.31302 4.14048 1.97389 4.39052 1.72384C4.64057 1.47379 4.97971 1.33331 5.33333 1.33331H10.6667C11.0203 1.33331 11.3594 1.47379 11.6095 1.72384C11.8595 1.97389 12 2.31302 12 2.66665V14.6666H4Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.00004 8H2.66671C2.31309 8 1.97395 8.14048 1.7239 8.39052C1.47385 8.64057 1.33337 8.97971 1.33337 9.33333V13.3333C1.33337 13.687 1.47385 14.0261 1.7239 14.2761C1.97395 14.5262 2.31309 14.6667 2.66671 14.6667H4.00004" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 6H13.3333C13.687 6 14.0261 6.14048 14.2761 6.39052C14.5262 6.64057 14.6667 6.97971 14.6667 7.33333V13.3333C14.6667 13.687 14.5262 14.0261 14.2761 14.2761C14.0261 14.5262 13.687 14.6667 13.3333 14.6667H12" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.66663 4H9.33329" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.66663 6.66669H9.33329" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.66663 9.33337H9.33329" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.66663 12H9.33329" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_383_8">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+            <span>Startups</span>
+          </NavLink>
+
+          <NavLink
+            to="/investors"
+            end
+            onClick={() => setSelected("investors")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "investors") ? "active" : ""}`
+            }
+          >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clipPath="url(#clip0_365_492)">
-              <path d="M8 14.6667C11.6819 14.6667 14.6667 11.6819 14.6667 7.99999C14.6667 4.3181 11.6819 1.33333 8 1.33333C4.3181 1.33333 1.33333 4.3181 1.33333 7.99999C1.33333 11.6819 4.3181 14.6667 8 14.6667Z" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M8 8.66667C9.10457 8.66667 10 7.77124 10 6.66667C10 5.5621 9.10457 4.66667 8 4.66667C6.89543 4.66667 6 5.5621 6 6.66667C6 7.77124 6.89543 8.66667 8 8.66667Z" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M4.66667 13.7747V12.6667C4.66667 12.313 4.80714 11.9739 5.05719 11.7239C5.30724 11.4738 5.64638 11.3333 6 11.3333H10C10.3536 11.3333 10.6928 11.4738 10.9428 11.7239C11.1929 11.9739 11.3333 12.313 11.3333 12.6667V13.7747" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_365_492">
-                <rect width="16" height="16" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
-          <span>My Profile</span>
-        </NavLink>
+<path d="M12 4.77332C11.96 4.76665 11.9134 4.76665 11.8734 4.77332C10.9534 4.73998 10.22 3.98665 10.22 3.05331C10.22 2.09998 10.9867 1.33331 11.94 1.33331C12.8934 1.33331 13.66 2.10665 13.66 3.05331C13.6534 3.98665 12.92 4.73998 12 4.77332Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.3133 9.62663C12.2267 9.77997 13.2333 9.61996 13.94 9.14663C14.88 8.51996 14.88 7.4933 13.94 6.86663C13.2267 6.3933 12.2067 6.23329 11.2933 6.39329" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.98001 4.77332C4.02001 4.76665 4.06667 4.76665 4.10667 4.77332C5.02667 4.73998 5.76001 3.98665 5.76001 3.05331C5.76001 2.09998 4.99334 1.33331 4.04001 1.33331C3.08668 1.33331 2.32001 2.10665 2.32001 3.05331C2.32667 3.98665 3.06001 4.73998 3.98001 4.77332Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.66669 9.62663C3.75335 9.77997 2.74669 9.61996 2.04002 9.14663C1.10002 8.51996 1.10002 7.4933 2.04002 6.86663C2.75336 6.3933 3.77335 6.23329 4.68669 6.39329" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.99997 9.75336C7.95997 9.74669 7.9133 9.74669 7.8733 9.75336C6.9533 9.72002 6.21997 8.96669 6.21997 8.03336C6.21997 7.08002 6.98664 6.31335 7.93997 6.31335C8.8933 6.31335 9.65997 7.08669 9.65997 8.03336C9.6533 8.96669 8.91997 9.72669 7.99997 9.75336Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.05998 11.8534C5.11998 12.48 5.11998 13.5067 6.05998 14.1334C7.12665 14.8467 8.87331 14.8467 9.93998 14.1334C10.88 13.5067 10.88 12.48 9.93998 11.8534C8.87998 11.1467 7.12665 11.1467 6.05998 11.8534Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            <span>Investors</span>
+          </NavLink>
+
+          <NavLink
+            to="/funding"
+            end
+            onClick={() => setSelected("funding")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "funding") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.76819 6.66665C5.17011 6.14044 5.64886 5.68106 6.21915 5.33331H9.7794C12.3215 6.88342 13.0449 10.6515 13.2507 12.6705C13.3254 13.4031 12.7357 14 11.9993 14H9.33261" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.0382 2.20356L10 2.33333L8.21921 2.03653C8.07408 2.01234 7.92594 2.01234 7.78081 2.03653L5.99998 2.33333L4.96182 2.20356C4.36809 2.12935 3.98476 2.81431 4.35855 3.28155L5.99998 5.33333H10L11.6414 3.28155C12.0152 2.81431 11.6319 2.12935 11.0382 2.20356Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 12.6667C2 12.1144 2.44772 11.6667 3 11.6667H5.66667C6.21895 11.6667 6.66667 12.1144 6.66667 12.6667V13C6.66667 13.5523 6.21895 14 5.66667 14H3C2.44771 14 2 13.5523 2 13V12.6667Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 10.3333C2 9.78106 2.44772 9.33334 3 9.33334H5.66667C6.21895 9.33334 6.66667 9.78106 6.66667 10.3333V10.6667C6.66667 11.219 6.21895 11.6667 5.66667 11.6667H3C2.44771 11.6667 2 11.219 2 10.6667V10.3333Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            <span>Funding</span>
+          </NavLink>
+
+          <NavLink
+            to="/deal"
+            end
+            onClick={() => setSelected("deal")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "deal") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_383_42)">
+<path d="M7.62232 5.15596L6.30267 7.76685L5.49866 7.76685L5.74227 4.45353L6.54628 3.64952L8.48314 3.0039L9.77438 2.14307L12.5721 4.94076L11.9264 6.01679L9.93535 8.00788" stroke="#121212" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.82451 11.8277L6.1575 10.9251L9.55905 10.9247L10.1681 10.0625L9.55905 9.20042L10.1677 8.33788L9.55905 7.47533L10.1677 6.61364L9.55905 5.75109L7.32176 5.75109M5.6466 5.75109L4.01447 5.75109L3.10286 7.95395L2.24203 9.24519M1.59641 8.59957L0.305172 9.8908L4.17889 13.7645L5.47013 12.4733L1.59641 8.59957ZM10.6351 0.421723L9.34384 1.71296L13.2176 5.58668L14.5088 4.29544L10.6351 0.421723Z" stroke="#121212" stroke-miterlimit="10" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_383_42">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+            <span>Deal</span>
+          </NavLink>
+        </div>
+
+        <div className="em-sidebar-section">
+          <p className="em-sidebar-title">MANAGEMENT</p>
+
+          <NavLink
+            to="/compliance"
+            end
+            onClick={() => setSelected("compliance")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "compliance") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_383_3)">
+<path d="M13.3333 8.66667C13.3333 12 11 13.6667 8.22663 14.6333C8.0814 14.6826 7.92365 14.6802 7.77996 14.6267C4.99996 13.6667 2.66663 12 2.66663 8.66667V4C2.66663 3.82319 2.73686 3.65362 2.86189 3.5286C2.98691 3.40358 3.15648 3.33334 3.33329 3.33334C4.66663 3.33334 6.33329 2.53334 7.49329 1.52C7.63453 1.39934 7.81419 1.33304 7.99996 1.33304C8.18572 1.33304 8.36539 1.39934 8.50663 1.52C9.67329 2.54 11.3333 3.33334 12.6666 3.33334C12.8434 3.33334 13.013 3.40358 13.138 3.5286C13.2631 3.65362 13.3333 3.82319 13.3333 4V8.66667Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_383_3">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+            <span>Compliance</span>
+          </NavLink>
+
+          <NavLink
+            to="/reports"
+            end
+            onClick={() => setSelected("reports")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "reports") ? "active" : ""}`
+            }
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.99982 2.00049V12.6672C1.99982 13.0208 2.14029 13.3599 2.39034 13.61C2.64039 13.86 2.97953 14.0005 3.33315 14.0005H13.9998" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.9998 11.3338V6.00049" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.66663 11.3333V3.33331" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.33307 11.3333V9.33331" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            <span>Reports</span>
+          </NavLink>
+        </div>
+
+        <div className="em-sidebar-section">
+          <p className="em-sidebar-title">ADVANCED</p>
+
+          <NavLink
+            to="/tokenization"
+            end
+            onClick={() => setSelected("tokenization")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "tokenization") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_383_57)">
+<path d="M5.33337 9.33333C7.54251 9.33333 9.33337 7.54247 9.33337 5.33333C9.33337 3.12419 7.54251 1.33333 5.33337 1.33333C3.12424 1.33333 1.33337 3.12419 1.33337 5.33333C1.33337 7.54247 3.12424 9.33333 5.33337 9.33333Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.06 6.91333C12.6902 7.14828 13.251 7.53835 13.6905 8.04746C14.13 8.55657 14.434 9.16829 14.5745 9.82604C14.7149 10.4838 14.6872 11.1663 14.494 11.8106C14.3008 12.4548 13.9482 13.0399 13.4689 13.5117C12.9896 13.9836 12.3991 14.327 11.752 14.5101C11.1048 14.6933 10.4219 14.7103 9.76643 14.5596C9.11095 14.4089 8.50405 14.0954 8.00186 13.648C7.49967 13.2006 7.1184 12.6338 6.89331 12" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.66663 4H5.33329V6.66667" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.14 9.25334L11.6067 9.72668L9.72668 11.6067" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_383_57">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+            <span>Tokenization</span>
+          </NavLink>
+
+          <NavLink
+            to="/metaverse"
+            end
+            onClick={() => setSelected("metaverse")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "metaverse") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.97998 8.61333C1.78315 8.73159 1.6202 8.89867 1.5069 9.09839C1.39361 9.29812 1.33382 9.52371 1.33331 9.75333V11.9133C1.33382 12.143 1.39361 12.3686 1.5069 12.5683C1.6202 12.768 1.78315 12.9351 1.97998 13.0533L3.97998 14.2533C4.18735 14.3779 4.42472 14.4437 4.66665 14.4437C4.90857 14.4437 5.14594 14.3779 5.35331 14.2533L7.99998 12.6667V9L4.66665 7L1.97998 8.61333Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.66665 11L1.50665 9.09999" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.66669 11L8.00002 9" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.66669 11V14.4467" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 9V12.6667L10.6467 14.2533C10.854 14.3779 11.0914 14.4437 11.3333 14.4437C11.5753 14.4437 11.8126 14.3779 12.02 14.2533L14.02 13.0533C14.2168 12.9351 14.3798 12.768 14.4931 12.5683C14.6064 12.3686 14.6662 12.143 14.6667 11.9133V9.75333C14.6662 9.52371 14.6064 9.29812 14.4931 9.09839C14.3798 8.89867 14.2168 8.73159 14.02 8.61333L11.3333 7L8 9Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.3333 11L8 9" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.3333 11L14.4933 9.09999" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.3333 11V14.4467" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.31335 2.94667C5.11653 3.06493 4.95357 3.23201 4.84028 3.43173C4.72698 3.63146 4.66719 3.85705 4.66669 4.08667V7.00001L8.00002 9.00001L11.3334 7.00001V4.08667C11.3329 3.85705 11.2731 3.63146 11.1598 3.43173C11.0465 3.23201 10.8835 3.06493 10.6867 2.94667L8.68669 1.74667C8.47931 1.62208 8.24194 1.55626 8.00002 1.55626C7.7581 1.55626 7.52073 1.62208 7.31335 1.74667L5.31335 2.94667Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.00003 5.33333L4.84003 3.43333" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 5.33333L11.16 3.43333" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 9V5.33333" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            <span>Metaverse</span>
+          </NavLink>
+
+          <NavLink
+            to="/zakat"
+            end
+            onClick={() => setSelected("zakat")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "zakat") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_383_93)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8 0.5C8.11701 0.5 8.22922 0.546481 8.31196 0.629218C8.3947 0.711954 8.44118 0.824169 8.44118 0.941176V1.57294H8.70941C9.47882 1.57294 10.0956 2.20118 10.0956 2.96794C10.0956 3.08495 10.0491 3.19716 9.96637 3.2799C9.88363 3.36264 9.77142 3.40912 9.65441 3.40912C9.53741 3.40912 9.42519 3.36264 9.34245 3.2799C9.25972 3.19716 9.21323 3.08495 9.21323 2.96794C9.21418 2.8333 9.16165 2.70379 9.06719 2.60784C8.97273 2.51189 8.84405 2.45734 8.70941 2.45618H7.29059C7.03029 2.45618 6.85294 2.63265 6.81059 2.90088C6.76647 3.17441 6.88471 3.40912 7.12294 3.49471L9.20529 4.24471C10.5844 4.74235 10.235 6.80794 8.75353 6.80794H8.46323V7.55882C8.46323 7.67583 8.41675 7.78805 8.33402 7.87078C8.25128 7.95352 8.13907 8 8.02206 8C7.90505 8 7.79284 7.95352 7.7101 7.87078C7.62736 7.78805 7.58088 7.67583 7.58088 7.55882V6.80794H7.29059C7.10797 6.80736 6.92726 6.77082 6.75877 6.7004C6.59028 6.62998 6.4373 6.52707 6.30858 6.39753C6.17987 6.26799 6.07792 6.11437 6.00857 5.94543C5.93923 5.7765 5.90383 5.59556 5.90441 5.41294C5.90441 5.29593 5.95089 5.18372 6.03363 5.10098C6.11637 5.01825 6.22858 4.97176 6.34559 4.97176C6.4626 4.97176 6.57481 5.01825 6.65755 5.10098C6.74028 5.18372 6.78676 5.29593 6.78676 5.41294C6.78676 5.69971 7.01618 5.92471 7.29059 5.92471H8.75353C9.24235 5.92471 9.35882 5.23823 8.90706 5.07588L6.82382 4.325C6.095 4.06206 5.84529 3.34912 5.93882 2.76147C6.03324 2.16941 6.49912 1.57294 7.29059 1.57294H7.55882V0.941176C7.55882 0.824169 7.6053 0.711954 7.68804 0.629218C7.77078 0.546481 7.88299 0.5 8 0.5ZM4.03294 9.54941C4.47235 9.27412 5.01235 9.10294 5.735 9.10294H8.44118C8.86471 9.10294 9.22647 9.23529 9.485 9.47529C9.60741 9.58793 9.70513 9.72474 9.77197 9.87707C9.83881 10.0294 9.87332 10.1939 9.87332 10.3603C9.87332 10.5266 9.83881 10.6912 9.77197 10.8435C9.70513 10.9958 9.60741 11.1327 9.485 11.2453C9.22559 11.4853 8.86471 11.6176 8.44118 11.6176H6.67647C6.44706 11.6176 6.31647 11.6909 6.24324 11.7632C6.20516 11.8015 6.17509 11.8469 6.15479 11.8969C6.13449 11.9469 6.12436 12.0005 6.125 12.0544C6.125 12.1647 6.16647 12.2697 6.24324 12.3456C6.31647 12.4188 6.44794 12.4921 6.67647 12.4921H9.32441C10.0726 12.4921 10.7768 12.2309 11.4738 11.8347C12.0059 11.5329 12.5062 11.1703 13.0126 10.8024C13.1785 10.6818 13.3456 10.5618 13.5138 10.4424L13.5447 10.4221C14.2135 10.0285 14.9159 10.2738 15.2653 10.7609C15.4382 11.0018 15.5326 11.3115 15.4894 11.6344C15.4471 11.9538 15.2768 12.2512 14.9882 12.485L14.9759 12.4982L14.8788 12.5953C14.3738 13.0935 13.831 13.5519 13.2553 13.9665C12.2274 14.705 10.7909 15.5 9.32441 15.5H0.941176C0.824169 15.5 0.711954 15.4535 0.629218 15.3708C0.546481 15.288 0.5 15.1758 0.5 15.0588V11.9706C0.5 11.8536 0.546481 11.7414 0.629218 11.6586C0.711954 11.5759 0.824169 11.5294 0.941176 11.5294C1.52882 11.5294 1.91618 11.3971 2.21176 11.2153C2.52059 11.0265 2.75529 10.7715 3.03235 10.4626L3.05441 10.4379C3.31471 10.1468 3.61912 9.80794 4.03294 9.54941ZM14.3679 11.8568L14.4191 11.8109C14.5629 11.6988 14.6044 11.5929 14.615 11.5188C14.6237 11.4323 14.6001 11.3455 14.5488 11.2753C14.4429 11.1279 14.2409 11.0441 14.0062 11.1747C13.8615 11.2776 13.7126 11.3847 13.5597 11.4959C13.0453 11.87 12.4885 12.2732 11.9097 12.6024C11.1421 13.0382 10.2844 13.3744 9.32441 13.3744H6.67647C6.24412 13.3744 5.87882 13.2279 5.62029 12.9712C5.50002 12.851 5.40473 12.7082 5.33991 12.551C5.27509 12.3938 5.24204 12.2253 5.24265 12.0553C5.24265 11.7253 5.36618 11.3909 5.62029 11.1376C5.87882 10.8818 6.24324 10.7353 6.67647 10.7353H8.44206C8.68029 10.7353 8.81529 10.6638 8.88676 10.5976C8.92015 10.5678 8.94684 10.5312 8.96509 10.4903C8.98334 10.4494 8.99273 10.4051 8.99265 10.3603C8.99273 10.3155 8.98334 10.2712 8.96509 10.2303C8.94684 10.1894 8.92015 10.1528 8.88676 10.1229C8.81529 10.0568 8.68029 9.98529 8.44206 9.98529H5.735C5.16412 9.98529 4.78912 10.1176 4.49971 10.2976C4.19794 10.4865 3.96765 10.7415 3.68794 11.0521L3.68176 11.0591C3.41618 11.3565 3.10382 11.7032 2.67324 11.9679C2.28084 12.2054 1.83923 12.3496 1.38235 12.3897V14.6176H9.32441C10.5041 14.6176 11.7509 13.9621 12.7426 13.25C13.3122 12.8391 13.8472 12.3823 14.3424 11.8841L14.3626 11.8629L14.3671 11.8576L14.3679 11.8568Z" fill="#121212"/>
+</g>
+<defs>
+<clipPath id="clip0_383_93">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+            <span>Zakat</span>
+          </NavLink>
+
+          <NavLink
+            to="/investor-network"
+            end
+            onClick={() => setSelected("investor-network")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "investor-network") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_383_114)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.14999 1.23C4.99799 1.598 4.99799 2.063 4.99799 3C4.99799 3.937 4.99799 4.4 5.14999 4.77C5.35299 5.26 5.74199 5.649 6.22999 5.85C6.59799 6.002 7.06299 6.002 7.99999 6.002V8.002H3.49999C3.10217 8.002 2.72064 8.16003 2.43933 8.44134C2.15803 8.72264 1.99999 9.10417 1.99999 9.502V10.015C1.67299 10.032 1.43899 10.069 1.23499 10.154C0.744991 10.357 0.355991 10.746 0.154991 11.234C0.00299072 11.602 0.00299072 12.068 0.00299072 13.004C0.00299072 13.94 0.00299072 14.404 0.154991 14.774C0.357991 15.264 0.746991 15.653 1.23499 15.854C1.60299 16.006 2.06799 16.006 3.00499 16.006C3.94199 16.006 4.40499 16.006 4.77499 15.854C5.26499 15.651 5.65399 15.262 5.85499 14.774C6.00699 14.406 6.00699 13.94 6.00699 13.004C6.00699 12.068 6.00699 11.604 5.85499 11.234C5.65204 10.7453 5.26369 10.3569 4.77499 10.154C4.40699 10.002 3.94199 10.002 3.00499 10.002V9.502C3.00499 9.36939 3.05767 9.24221 3.15144 9.14845C3.24521 9.05468 3.37238 9.002 3.50499 9.002H12.505C12.6376 9.002 12.7648 9.05468 12.8585 9.14845C12.9523 9.24221 13.005 9.36939 13.005 9.502V10.002C12.073 10.002 11.605 10.002 11.235 10.154C10.745 10.357 10.356 10.746 10.155 11.234C10.003 11.602 10.003 12.068 10.003 13.004C10.003 13.94 10.003 14.404 10.155 14.774C10.358 15.264 10.747 15.653 11.235 15.854C11.603 16.006 12.069 16.006 13.005 16.006C13.941 16.006 14.405 16.006 14.775 15.854C15.265 15.651 15.654 15.262 15.855 14.774C16.007 14.406 16.007 13.94 16.007 13.004C16.007 12.068 16.007 11.604 15.855 11.234C15.652 10.7453 15.2637 10.3569 14.775 10.154C14.571 10.07 14.337 10.032 14.01 10.015V9.502C14.01 9.10417 13.852 8.72264 13.5707 8.44134C13.2893 8.16003 12.9078 8.002 12.51 8.002H9.00999V5.992C9.33699 5.975 9.57099 5.938 9.77499 5.853C10.265 5.65 10.654 5.261 10.855 4.773C11.007 4.405 11.007 3.94 11.007 3.003C11.007 2.066 11.007 1.603 10.855 1.233C10.652 0.744301 10.2637 0.355949 9.77499 0.152999C9.40699 0.000999451 8.94199 0.000999451 8.00499 0.000999451C7.06799 0.000999451 6.60499 0.000999451 6.23499 0.152999C5.74499 0.355999 5.35599 0.744999 5.15499 1.233L5.14999 1.23ZM1.10999 11.53C1.00099 11.744 1.00099 12.024 1.00099 12.58V13.38C1.00099 13.94 1.00099 14.22 1.10999 14.43C1.20599 14.618 1.35899 14.771 1.54699 14.867C1.76099 14.976 2.04099 14.976 2.59699 14.976H3.39699C3.95699 14.976 4.23699 14.976 4.44699 14.867C4.63499 14.771 4.78799 14.618 4.88399 14.43C4.99299 14.216 4.99299 13.936 4.99299 13.38V12.58C4.99299 12.02 4.99299 11.74 4.88399 11.53C4.78812 11.3418 4.63514 11.1889 4.44699 11.093C4.23299 10.984 3.95299 10.984 3.39699 10.984H2.59699C2.03699 10.984 1.75699 10.984 1.54699 11.093C1.35884 11.1889 1.20586 11.3418 1.10999 11.53ZM11 12.58C11 12.02 11 11.74 11.109 11.53C11.205 11.342 11.358 11.189 11.546 11.093C11.76 10.984 12.04 10.984 12.596 10.984H13.396C13.956 10.984 14.236 10.984 14.446 11.093C14.634 11.189 14.787 11.342 14.883 11.53C14.992 11.744 14.992 12.024 14.992 12.58V13.38C14.992 13.94 14.992 14.22 14.883 14.43C14.7871 14.6182 14.6341 14.7711 14.446 14.867C14.232 14.976 13.952 14.976 13.396 14.976H12.596C12.036 14.976 11.756 14.976 11.546 14.867C11.3578 14.7711 11.2049 14.6182 11.109 14.43C11 14.216 11 13.936 11 13.38V12.58ZM6.10999 1.48C6.00099 1.694 6.00099 1.974 6.00099 2.53V3.33C6.00099 3.89 6.00099 4.17 6.10999 4.38C6.20599 4.568 6.35899 4.721 6.54699 4.817C6.76099 4.926 7.04099 4.926 7.59699 4.926H8.39699C8.95699 4.926 9.23699 4.926 9.44699 4.817C9.63499 4.721 9.78799 4.568 9.88399 4.38C9.99299 4.166 9.99299 3.886 9.99299 3.33V2.53C9.99299 1.97 9.99299 1.69 9.88399 1.48C9.78812 1.29185 9.63514 1.13887 9.44699 1.043C9.23299 0.933999 8.95299 0.933999 8.39699 0.933999H7.59699C7.03699 0.933999 6.75699 0.933999 6.54699 1.043C6.35884 1.13887 6.20586 1.29185 6.10999 1.48Z" fill="#121212"/>
+</g>
+<defs>
+<clipPath id="clip0_383_114">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+
+            <span>Investor Network</span>
+          </NavLink>
+        </div>
       </div>
 
-      <div className="em-sidebar-section">
-        <p className="em-sidebar-title">INVESTORS</p>
-        <NavLink
-          to="/outreach"
-          end
-          onClick={() => setSelected("outreach")}
-          className={({ isActive }) =>
-            `em-sidebar-item ${(isActive || selected === "outreach") ? "active" : ""}`
-          }
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clipPath="url(#clip0_365_510)">
-              <path d="M9.69067 14.4573C9.71599 14.5205 9.76002 14.5743 9.81685 14.6117C9.87367 14.6491 9.94057 14.6682 10.0086 14.6664C10.0766 14.6647 10.1424 14.6422 10.1972 14.6019C10.2521 14.5617 10.2933 14.5057 10.3153 14.4413L14.6487 1.77466C14.67 1.71559 14.6741 1.65167 14.6604 1.59037C14.6467 1.52907 14.6159 1.47293 14.5715 1.42852C14.5271 1.3841 14.4709 1.35326 14.4096 1.33959C14.3483 1.32592 14.2844 1.32999 14.2253 1.35133L1.55867 5.68466C1.49433 5.70673 1.43828 5.74794 1.39805 5.80278C1.35781 5.85761 1.33531 5.92344 1.33357 5.99144C1.33183 6.05943 1.35093 6.12632 1.3883 6.18315C1.42568 6.23997 1.47954 6.284 1.54267 6.30933L6.82933 8.42933C6.99646 8.49624 7.1483 8.5963 7.27571 8.72348C7.40312 8.85066 7.50345 9.00233 7.57067 9.16933L9.69067 14.4573Z" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M14.5693 1.43134L7.276 8.724" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_365_510">
-                <rect width="16" height="16" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
-          <span>Outreach Sent</span>
-        </NavLink>
-        <NavLink
-          to="/investor-inquiries"
-          end
-          onClick={() => setSelected("investor-inquiries")}
-          className={({ isActive }) =>
-            `em-sidebar-item ${(isActive || selected === "investor-inquiries") ? "active" : ""}`
-          }
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.6667 8H10.6667L9.33333 10H6.66667L5.33333 8H1.33333" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M3.63333 3.40666L1.33333 7.99999V12C1.33333 12.3536 1.47381 12.6928 1.72386 12.9428C1.9739 13.1928 2.31304 13.3333 2.66667 13.3333H13.3333C13.687 13.3333 14.0261 13.1928 14.2761 12.9428C14.5262 12.6928 14.6667 12.3536 14.6667 12V7.99999L12.3667 3.40666C12.2563 3.18451 12.0861 2.99757 11.8753 2.86684C11.6645 2.73612 11.4214 2.66679 11.1733 2.66666H4.82667C4.57861 2.66679 4.33551 2.73612 4.12469 2.86684C3.91388 2.99757 3.74372 3.18451 3.63333 3.40666Z" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span>Investor Inquiries</span>
-        </NavLink>
-        <NavLink
-          to="/funding"
-          end
-          onClick={() => setSelected("funding")}
-          className={({ isActive }) =>
-            `em-sidebar-item ${(isActive || selected === "funding") ? "active" : ""}`
-          }
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clipPath="url(#clip0_365_522)">
-              <path d="M11.5556 9.4C11.3495 9.0338 11.0704 8.71386 10.7355 8.46003C10.4006 8.2062 10.0172 8.0239 9.60893 7.92444C9.22596 7.80955 8.83729 7.7146 8.44448 7.64V3.60889C9.22542 3.69265 9.97047 3.98086 10.6045 4.44444C10.6483 4.48325 10.6992 4.51307 10.7545 4.53217C10.8098 4.55128 10.8684 4.55931 10.9267 4.5558C10.9851 4.55229 11.0423 4.53732 11.0949 4.51173C11.1475 4.48614 11.1946 4.45044 11.2334 4.40666C11.2722 4.36289 11.302 4.3119 11.3211 4.2566C11.3402 4.20131 11.3482 4.14279 11.3447 4.08439C11.3412 4.026 11.3262 3.96886 11.3007 3.91625C11.2751 3.86364 11.2394 3.81659 11.1956 3.77777C10.4002 3.16515 9.44499 2.79481 8.44448 2.71111V1.33333C8.44448 1.21546 8.39766 1.10241 8.31431 1.01906C8.23096 0.935711 8.11791 0.888885 8.00004 0.888885C7.88216 0.888885 7.76912 0.935711 7.68577 1.01906C7.60242 1.10241 7.55559 1.21546 7.55559 1.33333V2.66666C5.60004 2.71111 4.52004 3.68444 4.19115 4.52444C3.97174 5.06535 3.9509 5.66647 4.13231 6.22127C4.31372 6.77608 4.68567 7.24876 5.18226 7.55555C5.9051 7.99619 6.71474 8.27517 7.55559 8.37333V12.4444C6.39529 12.386 5.28376 11.9595 4.38226 11.2267C4.34203 11.1788 4.29214 11.1399 4.23587 11.1127C4.1796 11.0854 4.1182 11.0703 4.05569 11.0684C3.99319 11.0664 3.93098 11.0777 3.87313 11.1015C3.81528 11.1252 3.7631 11.1609 3.72 11.2062C3.67689 11.2515 3.64383 11.3054 3.62298 11.3644C3.60213 11.4234 3.59396 11.4861 3.59899 11.5484C3.60403 11.6107 3.62217 11.6713 3.65222 11.7261C3.68226 11.781 3.72355 11.8289 3.77337 11.8667C4.83663 12.7614 6.16711 13.2773 7.55559 13.3333V14.6667C7.55559 14.7845 7.60242 14.8976 7.68577 14.9809C7.76912 15.0643 7.88216 15.1111 8.00004 15.1111C8.11791 15.1111 8.23096 15.0643 8.31431 14.9809C8.39766 14.8976 8.44448 14.7845 8.44448 14.6667V13.3333C9.69781 13.2489 11.1423 12.8489 11.6889 11.2178C11.7878 10.921 11.827 10.6075 11.8041 10.2955C11.7812 9.98355 11.6967 9.67918 11.5556 9.4ZM5.68448 6.80889C5.35995 6.6157 5.11497 6.31309 4.99358 5.95545C4.87219 5.5978 4.88236 5.20859 5.02226 4.85777C5.07115 4.72444 5.56893 3.60889 7.55559 3.55555V7.46666C6.89259 7.38135 6.25502 7.15722 5.68448 6.80889ZM10.8445 10.9156C10.5245 11.8667 9.81337 12.3244 8.44448 12.4267V8.54666C8.72893 8.60889 9.02226 8.68 9.33337 8.77333C9.62726 8.84008 9.9045 8.96591 10.1482 9.14317C10.392 9.32043 10.5971 9.54541 10.7511 9.80444C10.9255 10.1486 10.9589 10.5471 10.8445 10.9156Z" fill="#121212"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_365_522">
-                <rect width="16" height="16" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
-          <span>Funding Progress</span>
-        </NavLink>
-      </div>
+      <div className="em-sidebar-footer">
+        <div className="em-sidebar-section">
+          <p className="em-sidebar-title">ACCOUNT</p>
 
-      <div className="em-sidebar-section">
-        <p className="em-sidebar-title">COMPLIANCE</p>
-        <NavLink
-          to="/documents"
-          end
-          onClick={() => setSelected("documents")}
-          className={({ isActive }) =>
-            `em-sidebar-item ${(isActive || selected === "documents") ? "active" : ""}`
-          }
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clipPath="url(#clip0_365_528)">
-              <path d="M10 1.33334H4C3.64638 1.33334 3.30724 1.47382 3.05719 1.72387C2.80714 1.97392 2.66667 2.31305 2.66667 2.66668V13.3333C2.66667 13.687 2.80714 14.0261 3.05719 14.2762C3.30724 14.5262 3.64638 14.6667 4 14.6667H12C12.3536 14.6667 12.6928 14.5262 12.9428 14.2762C13.1929 14.0261 13.3333 13.687 13.3333 13.3333V4.66668L10 1.33334Z" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M9.33333 1.33334V4.00001C9.33333 4.35363 9.47381 4.69277 9.72386 4.94282C9.97391 5.19287 10.313 5.33334 10.6667 5.33334H13.3333" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M6.66667 6H5.33333" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M10.6667 8.66666H5.33333" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M10.6667 11.3333H5.33333" stroke="#121212" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_365_528">
-                <rect width="16" height="16" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
-          <span>Documents & Compliance</span>
-        </NavLink>
-      </div>
+          <NavLink
+            to="/settings"
+            end
+            onClick={() => setSelected("settings")}
+            className={({ isActive }) =>
+              `em-sidebar-item ${(isActive || selected === "settings") ? "active" : ""}`
+            }
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_383_119)">
+<path d="M8.14667 1.33331H7.85333C7.49971 1.33331 7.16057 1.47379 6.91053 1.72384C6.66048 1.97389 6.52 2.31302 6.52 2.66665V2.78665C6.51976 3.02046 6.45804 3.25011 6.34103 3.45254C6.22401 3.65497 6.05583 3.82307 5.85333 3.93998L5.56667 4.10665C5.36398 4.22367 5.13405 4.28528 4.9 4.28528C4.66595 4.28528 4.43603 4.22367 4.23333 4.10665L4.13333 4.05331C3.82738 3.87682 3.46389 3.82894 3.12267 3.92018C2.78145 4.01143 2.49037 4.23434 2.31333 4.53998L2.16667 4.79331C1.99018 5.09927 1.9423 5.46275 2.03354 5.80398C2.12478 6.1452 2.34769 6.43628 2.65333 6.61331L2.75333 6.67998C2.95485 6.79632 3.12241 6.96337 3.23937 7.16453C3.35632 7.36569 3.4186 7.59396 3.42 7.82665V8.16665C3.42093 8.40159 3.35977 8.63261 3.2427 8.83632C3.12563 9.04002 2.95681 9.20917 2.75333 9.32665L2.65333 9.38665C2.34769 9.56368 2.12478 9.85476 2.03354 10.196C1.9423 10.5372 1.99018 10.9007 2.16667 11.2066L2.31333 11.46C2.49037 11.7656 2.78145 11.9885 3.12267 12.0798C3.46389 12.171 3.82738 12.1231 4.13333 11.9466L4.23333 11.8933C4.43603 11.7763 4.66595 11.7147 4.9 11.7147C5.13405 11.7147 5.36398 11.7763 5.56667 11.8933L5.85333 12.06C6.05583 12.1769 6.22401 12.345 6.34103 12.5474C6.45804 12.7499 6.51976 12.9795 6.52 13.2133V13.3333C6.52 13.6869 6.66048 14.0261 6.91053 14.2761C7.16057 14.5262 7.49971 14.6666 7.85333 14.6666H8.14667C8.50029 14.6666 8.83943 14.5262 9.08948 14.2761C9.33952 14.0261 9.48 13.6869 9.48 13.3333V13.2133C9.48024 12.9795 9.54196 12.7499 9.65898 12.5474C9.77599 12.345 9.94418 12.1769 10.1467 12.06L10.4333 11.8933C10.636 11.7763 10.866 11.7147 11.1 11.7147C11.334 11.7147 11.564 11.7763 11.7667 11.8933L11.8667 11.9466C12.1726 12.1231 12.5361 12.171 12.8773 12.0798C13.2186 11.9885 13.5096 11.7656 13.6867 11.46L13.8333 11.2C14.0098 10.894 14.0577 10.5305 13.9665 10.1893C13.8752 9.84809 13.6523 9.55701 13.3467 9.37998L13.2467 9.32665C13.0432 9.20917 12.8744 9.04002 12.7573 8.83632C12.6402 8.63261 12.5791 8.40159 12.58 8.16665V7.83331C12.5791 7.59837 12.6402 7.36734 12.7573 7.16364C12.8744 6.95994 13.0432 6.79079 13.2467 6.67331L13.3467 6.61331C13.6523 6.43628 13.8752 6.1452 13.9665 5.80398C14.0577 5.46275 14.0098 5.09927 13.8333 4.79331L13.6867 4.53998C13.5096 4.23434 13.2186 4.01143 12.8773 3.92018C12.5361 3.82894 12.1726 3.87682 11.8667 4.05331L11.7667 4.10665C11.564 4.22367 11.334 4.28528 11.1 4.28528C10.866 4.28528 10.636 4.22367 10.4333 4.10665L10.1467 3.93998C9.94418 3.82307 9.77599 3.65497 9.65898 3.45254C9.54196 3.25011 9.48024 3.02046 9.48 2.78665V2.66665C9.48 2.31302 9.33952 1.97389 9.08948 1.72384C8.83943 1.47379 8.50029 1.33331 8.14667 1.33331Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_383_119">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>
 
-      <div className="em-sidebar-section">
-        <p className="em-sidebar-title">COMMUNICATION</p>
-        <NavLink
-          to="/messages"
-          end
-          onClick={() => setSelected("messages")}
-          className={({ isActive }) =>
-            `em-sidebar-item ${(isActive || selected === "messages") ? "active" : ""}`
-          }
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.30933 11.2187C1.33333 10.438 1.33333 9.84733 1.33333 7.33333C1.33333 4.81933 1.33333 3.562 2.30933 2.78133C3.28667 2 4.85733 2 8 2C11.1427 2 12.714 2 13.69 2.78133C14.666 3.56267 14.6667 4.81933 14.6667 7.33333C14.6667 9.84733 14.6667 10.438 13.69 11.2187C12.7147 12 11.1427 12 8 12C6.32667 12 5.46667 13.1587 4 14V11.8587C3.27067 11.75 2.734 11.5587 2.30933 11.2187Z" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span>Messages</span>
-        </NavLink>
-      </div>
+            <span>Settings</span>
+          </NavLink>
 
-      <div className="em-sidebar-section">
-        <p className="em-sidebar-title">ACCOUNT</p>
-        <button
-  className="em-sidebar-item em-sidebar-item--logout"
-  onClick={() => {
-    setSelected("");
-    if (onLogoutClick) onLogoutClick();
-  }}
-  aria-label="Log out"
->
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H6" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M10.666 11.3327L13.9993 7.99935L10.666 4.66602" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M14 8H6" stroke="#121212" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-  <span>Logout</span>
-</button>
+          <button
+            className="em-sidebar-item em-sidebar-item--logout"
+            onClick={() => {
+              setSelected("");
+              if (onLogoutClick) onLogoutClick();
+            }}
+            aria-label="Log out"
+          >
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H6" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.6667 11.3334L14 8.00002L10.6667 4.66669" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 8H6" stroke="#121212" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            <span>Log out</span>
+          </button>
+        </div>
       </div>
     </aside>
   );

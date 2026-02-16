@@ -3,13 +3,21 @@ import { BrowserRouter, Routes, Route, useNavigate, useSearchParams, useLocation
 import Sidebar from "./components/sidebar/Sidebar";
 import LogoutConfirmModal from "./components/logout-modal/LogoutConfirmModal";
 import Dashboard from "./pages/Dashboard";
+import Startups from "./pages/startups/StartupsNew";
+import StartupDetails from "./pages/startups/StartupDetails";
+import Investors from "./pages/investors/InvestorsNew";
+import InvestorDetails from "./pages/investors/InvestorDetails";
+import Funding from "./pages/funding/FundingNew";
+import Deal from "./pages/deal/DealNew";
+import Compliance from "./pages/compliance/Compliance";
+import Reports from "./pages/reports/Reports";
+import TokenizationPage from "./pages/tokenization/TokenizationPage";
+import MetaversePage from "./pages/metaverse/MetaversePage";
+import ZakatPage from "./pages/zakat/ZakatPage";
+import InvestorNetworkPage from "./pages/investor-network/InvestorNetworkPage";
+import SettingsPage from "./pages/settings/SettingsPage";
 import MyProfile from "./pages/MyProfile";
-import OutreachPage from "./pages/outreach/OutreachPage";
-import InvestorInquiriesPage from "./pages/investor/InvestorInquiriesPage";
-import FundingProgressPage from "./pages/funding/FundingProgressPage";
-import MessagesPage from "./pages/messages/MessagesPage";
 import Login from "./pages/auth/Login";
-import DocumentsPage from "./pages/documents/DocumentsPage";
 import "./App.css";
 
 function AppContent() {
@@ -125,12 +133,20 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Dashboard isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
           <Route path="/overview" element={<Dashboard isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/startups" element={<Startups isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/startups/details" element={<StartupDetails isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/investors" element={<Investors isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/investors/details" element={<InvestorDetails isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/funding" element={<Funding isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/deal" element={<Deal isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/compliance" element={<Compliance isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/reports" element={<Reports isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/tokenization" element={<TokenizationPage isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/metaverse" element={<MetaversePage isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/zakat" element={<ZakatPage isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/investor-network" element={<InvestorNetworkPage isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
+          <Route path="/settings" element={<SettingsPage isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
           <Route path="/profile" element={<MyProfile toggleTheme={toggleTheme} />} />
-          <Route path="/outreach" element={<OutreachPage isDarkMode={isDarkMode} toggleTheme={toggleTheme} />} />
-          <Route path="/investor-inquiries" element={<InvestorInquiriesPage isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
-          <Route path="/funding" element={<FundingProgressPage toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
-          <Route path="/messages" element={<MessagesPage toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
-          <Route path="/documents" element={<DocumentsPage toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
           <Route path="/auth/login" element={<Login />} />
         </Routes>
       </main>

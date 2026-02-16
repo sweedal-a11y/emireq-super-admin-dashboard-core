@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import "./Header.css";
 import avatar from "../../assets/arab1.png";
 
@@ -23,9 +23,22 @@ export default function Header({ isDarkMode, toggleTheme }) {
   const isTokenPage = location.pathname === "/dashboard/token";
   const isAnalyticsPage = location.pathname === "/dashboard/analytics";
   const isOutreachPage = location.pathname === "/dashboard/outreach";
+  const isStartupsPage = location.pathname === "/startups";
+  const isInvestorsPage = location.pathname === "/investors";
+  const isFundingPage = location.pathname === "/funding";
+  const isDealPage = location.pathname === "/deal";
+  const isCompliancePage = location.pathname === "/compliance";
+  const isReportsPage = location.pathname === "/reports";
+  const isStartupDetailsPage = location.pathname === "/startups/details";
+  const isInvestorDetailsPage = location.pathname === "/investors/details";
+  const isTokenizationPage = location.pathname === "/tokenization";
+  const isMetaversePage = location.pathname === "/metaverse";
+  const isZakatPage = location.pathname === "/zakat";
+  const isInvestorNetworkPage = location.pathname === "/investor-network";
+  const isSettingsPage = location.pathname === "/settings";
 
   return (
-    <header className="em-header">
+    <header className={`em-header ${isTokenizationPage ? 'em-header--tokenization' : ''}`}>
       {isTokenPage ? (
         <div className="em-header-breadcrumb">
           <span className="em-breadcrumb-item">Dashboard</span>
@@ -49,6 +62,118 @@ export default function Header({ isDarkMode, toggleTheme }) {
             <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <span className="em-breadcrumb-item em-breadcrumb-item--active">Outreach</span>
+        </div>
+      ) : isStartupsPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Startups</span>
+        </div>
+      ) : isInvestorsPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Investors</span>
+        </div>
+      ) : isFundingPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Funding</span>
+        </div>
+      ) : isDealPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Deal</span>
+        </div>
+      ) : isCompliancePage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Compliance</span>
+        </div>
+      ) : isReportsPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Reports</span>
+        </div>
+      ) : isStartupDetailsPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <Link to="/startups" className="em-breadcrumb-item em-breadcrumb-link">Startups</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Startup Details</span>
+        </div>
+      ) : isInvestorDetailsPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <Link to="/investors" className="em-breadcrumb-item em-breadcrumb-link">Investors</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Investor Details</span>
+        </div>
+      ) : isTokenizationPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Tokenization</span>
+        </div>
+      ) : isMetaversePage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Metaverse</span>
+        </div>
+      ) : isZakatPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Zakat</span>
+        </div>
+      ) : isInvestorNetworkPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Investor Network</span>
+        </div>
+      ) : isSettingsPage ? (
+        <div className="em-header-breadcrumb">
+          <Link to="/overview" className="em-breadcrumb-item em-breadcrumb-link">Dashboard</Link>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="em-breadcrumb-arrow">
+            <path d="M6 12L10 8L6 4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="em-breadcrumb-item em-breadcrumb-item--active">Settings</span>
         </div>
       ) : (
         <h2 className="em-header-title">Dashboard</h2>

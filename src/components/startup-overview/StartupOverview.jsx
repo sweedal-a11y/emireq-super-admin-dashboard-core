@@ -1,10 +1,11 @@
 import React from 'react';
 import Header from '../header/Header';
-import StartupStatsCards from './StartupStatsCards';
-import HeroBanner from './HeroBanner';
-import CompanySummaryCard from './CompanySummaryCard';
-import ChartsRow from './ChartsRow';
-import RecentInvestorEngagementTable from './RecentInvestorEngagementTable';
+import DashboardStats from './DashboardStats';
+import InvestmentBanner from './InvestmentBanner';
+import TotalInvestment from './TotalInvestment';
+import MonthlyFundingTrend from './MonthlyFundingTrend';
+import TokenizationStatus from './TokenizationStatus';
+import MarketOverview from './MarketOverview';
 import './StartupOverview.css';
 
 export default function StartupOverview({ isDarkMode, toggleTheme, sidebarCollapsed }) {
@@ -13,26 +14,32 @@ export default function StartupOverview({ isDarkMode, toggleTheme, sidebarCollap
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       
       <div className="em-startup-overview-content">
-        {/* Page Intro */}
-        <section className="em-page-intro">
-          <h1 className="em-page-title">Dashboard Overview</h1>
-          <p className="em-page-subtitle">Assalamu Alaikum, welcome to your Islamic investment platform</p>
-        </section>
+        <div className="dashboard-header">
+          <h1 className="dashboard-title">Dashboard</h1>
+          <p className="dashboard-subtitle">Overview of your startup acquisition marketplace</p>
+        </div>
+        
+        <DashboardStats />
+        
+        <div className="dashboard-grid">
+          <div className="dashboard-left">
+            <InvestmentBanner />
+          </div>
+          <div className="dashboard-right">
+            <TotalInvestment />
+          </div>
+        </div>
+        
+        <div className="dashboard-grid">
+          <div className="dashboard-left">
+            <MonthlyFundingTrend />
+          </div>
+          <div className="dashboard-right">
+            <TokenizationStatus />
+          </div>
+        </div>
 
-        {/* Stats Cards */}
-        <StartupStatsCards />
-
-        {/* Hero Banner */}
-        <HeroBanner />
-
-        {/* Company Summary Card */}
-        <CompanySummaryCard />
-
-        {/* Charts Row */}
-        <ChartsRow sidebarCollapsed={sidebarCollapsed} />
-
-        {/* Recent Investor Engagement Table */}
-        <RecentInvestorEngagementTable />
+        <MarketOverview />
       </div>
     </div>
   );

@@ -1,0 +1,451 @@
+.monthly-funding-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 400px;
+}
+
+.monthly-funding-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.funding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.funding-title-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.funding-icon {
+  width: 24px;
+  height: 24px;
+  color: #6366f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.funding-title-section h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  color: #1e293b;
+  white-space: nowrap;
+}
+
+.info-btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.info-btn:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.info-btn:active {
+  transform: scale(0.95);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  padding: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.expand-btn,
+.edit-btn,
+.more-options {
+  cursor: pointer;
+  color: #888888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.expand-btn {
+  border-right: 1px solid #E0E0E0;
+}
+
+.edit-btn {
+  border-right: 1px solid #E0E0E0;
+}
+
+.expand-btn:hover,
+.edit-btn:hover,
+.more-options:hover {
+  background: rgba(136, 136, 136, 0.05);
+  cursor: pointer;
+}
+
+.expand-btn:active,
+.edit-btn:active,
+.more-options:active {
+  background: rgba(136, 136, 136, 0.1);
+}
+
+.expand-btn.expanded {
+  background: rgba(251, 191, 36, 0.1);
+  color: #92400e;
+}
+
+.more-options.active {
+  background: rgba(136, 136, 136, 0.1);
+  color: #666666;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 6px;
+  min-width: 160px;
+  z-index: 1000;
+  animation: fadeInDown 0.2s ease;
+}
+
+.dropdown-menu button {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  font-weight: 400;
+}
+
+.dropdown-menu button:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.funding-chart {
+  width: 100%;
+  overflow: visible;
+  margin-top: 8px;
+}
+
+.funding-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart-point {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.chart-point:hover {
+  r: 6;
+  filter: drop-shadow(0 2px 6px rgba(99, 102, 241, 0.5));
+}
+
+.value-tooltip {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+  animation: tooltipFadeIn 0.3s ease;
+}
+
+.tooltip-group {
+  animation: tooltipFadeIn 0.3s ease;
+}
+
+.month-highlight {
+  animation: pillFadeIn 0.3s ease;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pillFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .monthly-funding-card {
+    background: #1e293b;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .monthly-funding-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+
+  .funding-title-section h3 {
+    color: #f8fafc;
+  }
+
+  .header-actions {
+    background: #334155;
+    border-color: rgba(193, 193, 193, 0.2);
+  }
+
+  .expand-btn,
+  .edit-btn,
+  .more-options {
+    color: #94a3b8;
+  }
+
+  .expand-btn:hover,
+  .edit-btn:hover,
+  .more-options:hover {
+    background: rgba(148, 163, 184, 0.1);
+  }
+
+  .dropdown-menu {
+    background: #334155;
+    border-color: #475569;
+  }
+
+  .dropdown-menu button {
+    color: #e2e8f0;
+  }
+
+  .dropdown-menu button:hover {
+    background: #475569;
+    color: #f1f5f9;
+  }
+
+  .funding-chart svg line {
+    stroke: #334155;
+  }
+
+  .funding-chart svg text {
+    fill: #64748b;
+  }
+
+  .value-tooltip {
+    fill: #334155;
+    stroke: #475569;
+  }
+
+  .tooltip-group text {
+    fill: #f1f5f9;
+  }
+
+  .month-highlight {
+    fill: rgba(99, 102, 241, 0.2);
+  }
+}
+
+[data-theme="dark"] .monthly-funding-card {
+  background: #1e293b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .monthly-funding-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .funding-title-section h3 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .header-actions {
+  background: #334155;
+  border-color: rgba(193, 193, 193, 0.2);
+}
+
+[data-theme="dark"] .expand-btn,
+[data-theme="dark"] .edit-btn,
+[data-theme="dark"] .more-options {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .expand-btn:hover,
+[data-theme="dark"] .edit-btn:hover,
+[data-theme="dark"] .more-options:hover {
+  background: rgba(148, 163, 184, 0.1);
+}
+
+[data-theme="dark"] .dropdown-menu {
+  background: #334155;
+  border-color: #475569;
+}
+
+[data-theme="dark"] .dropdown-menu button {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .dropdown-menu button:hover {
+  background: #475569;
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .funding-chart svg line {
+  stroke: #334155;
+}
+
+[data-theme="dark"] .funding-chart svg text {
+  fill: #64748b;
+}
+
+[data-theme="dark"] .value-tooltip {
+  fill: #334155;
+  stroke: #475569;
+}
+
+[data-theme="dark"] .tooltip-group text {
+  fill: #f1f5f9;
+}
+
+[data-theme="dark"] .month-highlight {
+  fill: rgba(99, 102, 241, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .monthly-funding-card {
+    padding: 20px;
+  }
+
+  .funding-title-section h3 {
+    font-size: 15px;
+  }
+
+  .funding-chart {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .monthly-funding-card {
+    padding: 18px;
+    gap: 16px;
+  }
+
+  .funding-title-section h3 {
+    font-size: 14px;
+  }
+
+  .funding-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .expand-btn,
+  .edit-btn,
+  .more-options {
+    width: 28px;
+    height: 28px;
+  }
+
+  .funding-chart {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .monthly-funding-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .funding-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .funding-title-section {
+    flex: 1 1 100%;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+}
+}
+
+@media (max-width: 768px) {
+  .monthly-funding-card {
+    padding: 16px;
+  }
+
+  .funding-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .funding-title-section h3 {
+    font-size: 14px;
+  }
+}

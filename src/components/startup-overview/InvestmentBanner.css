@@ -1,0 +1,207 @@
+.investment-banner {
+  background-color: #000000;
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+  border-radius: 16px;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.investment-banner:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-3px);
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.85) 30%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.2) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 500px;
+}
+
+.banner-title {
+  font-size: 38px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 14px 0;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.banner-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 10px 0;
+  font-weight: 400;
+}
+
+.banner-date {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 32px 0;
+  font-weight: 300;
+}
+
+.banner-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #facc15;
+  color: #1a1a1a;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(250, 204, 21, 0.4);
+}
+
+.banner-cta:hover {
+  background: #fbbf24;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5);
+}
+
+.banner-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(250, 204, 21, 0.4);
+}
+
+.banner-cta svg {
+  flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .investment-banner {
+    min-height: 250px;
+  }
+
+  .banner-title {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .investment-banner {
+    padding: 30px;
+    min-height: 220px;
+    background-position: center right;
+  }
+
+  .banner-title {
+    font-size: 28px;
+  }
+
+  .banner-subtitle {
+    font-size: 15px;
+  }
+
+  .banner-date {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .banner-cta {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .banner-overlay {
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.8) 40%,
+      rgba(0, 0, 0, 0.5) 70%,
+      transparent 100%
+    );
+  }
+}
+
+@media (max-width: 480px) {
+  .investment-banner {
+    padding: 24px;
+    min-height: 200px;
+    background-position: 70% center;
+  }
+
+  .banner-title {
+    font-size: 24px;
+  }
+
+  .banner-subtitle {
+    font-size: 14px;
+  }
+
+  .banner-date {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .banner-content {
+    max-width: 100%;
+  }
+
+  .banner-overlay {
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.98) 0%,
+      rgba(0, 0, 0, 0.85) 50%,
+      rgba(0, 0, 0, 0.6) 80%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+}
+
+/* Dark mode specific (additional styles) */
+@media (prefers-color-scheme: dark) {
+  .banner-overlay {
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.98) 0%,
+      rgba(0, 0, 0, 0.9) 30%,
+      rgba(0, 0, 0, 0.5) 60%,
+      rgba(0, 0, 0, 0.3) 80%,
+      transparent 100%
+    );
+  }
+}
+
+[data-theme="dark"] .banner-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.98) 0%,
+    rgba(0, 0, 0, 0.9) 30%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0.3) 80%,
+    transparent 100%
+  );
+}

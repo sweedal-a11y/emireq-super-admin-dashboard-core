@@ -3,15 +3,14 @@
 /* ============================= */
 
 .em-sidebar {
-  width: 260px;
-  min-width: 260px;
+  width: 240px;
+  min-width: 240px;
   height: 100vh;
-  background: #ffffff;
+  background: #fafafa;
   border-right: 1px solid #e5e7eb;
 
   display: flex;
   flex-direction: column;
-  padding: 24px 0;
 
   position: sticky;
   top: 0;
@@ -36,11 +35,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 
-  padding: 0 14px;
-  margin-bottom: 28px;
+  padding: 20px 16px;
+  flex-shrink: 0;
 }
 
+/* LOGO WRAPPER */
 /* LOGO WRAPPER — constrained so toggle never disappears */
 .em-sidebar-logo {
   display: flex;
@@ -65,9 +66,14 @@
   height: 28px;
 }
 
+
+
+
+
 /* TOGGLE BUTTON */
 .em-sidebar-toggle {
   all: unset;
+  box-sizing: border-box;
 
   width: 28px;
   height: 28px;
@@ -80,7 +86,7 @@
   color: #6b7280;
   border-radius: 6px;
 
-  flex-shrink: 0;         /* 🔑 NEVER shrink */
+  flex-shrink: 0;
 
   transition: background 0.2s ease, color 0.2s ease;
 }
@@ -95,23 +101,40 @@
 }
 
 /* ============================= */
+/* Content & Footer */
+/* ============================= */
+
+.em-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 12px;
+}
+
+.em-sidebar-footer {
+  margin-top: auto;
+  padding: 16px 12px 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ============================= */
 /* Sections */
 /* ============================= */
 
 .em-sidebar-section {
-  margin-bottom: 22px;
-  padding: 0 14px;
+  margin-bottom: 24px;
 }
 
 .em-sidebar-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: #9ca3af;
 
   text-transform: uppercase;
   letter-spacing: 0.08em;
 
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  padding: 0 12px;
 }
 
 .em-sidebar--collapsed .em-sidebar-title {
@@ -131,19 +154,19 @@
   gap: 12px;
 
   width: 100%;
-  height: 44px;
+  height: 40px;
 
-  padding: 0 16px;
-  border-radius: 12px;
+  padding: 0 12px;
+  border-radius: 8px;
 
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
-  color: #111827;
+  color: #374151;
 
   transition: background-color 0.18s ease, color 0.18s ease;
 
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -151,8 +174,8 @@
 
 /* ICON */
 .em-sidebar-item svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 
   color: #6b7280;
@@ -162,6 +185,7 @@
 /* HOVER */
 .em-sidebar-item:hover {
   background: #f3f4f6;
+  color: #111827;
 }
 
 .em-sidebar-item:hover svg {
@@ -185,7 +209,7 @@
   outline-offset: 2px;
 }
 
-/* DISABLED (future-safe) */
+/* DISABLED */
 .em-sidebar-item:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -205,25 +229,22 @@
 }
 
 /* ============================= */
-/* Footer */
+/* Logout Button */
 /* ============================= */
-
-.em-sidebar-footer {
-  margin-top: auto;
-  padding: 24px 14px 0;
-}
 
 .em-sidebar-item--logout {
   color: #6b7280;
 }
 
+.em-sidebar-item--logout svg {
+  color: #6b7280;
+}
+
 .em-sidebar-item--logout:hover {
-  background: #facc15;
+  background: #f3f4f6;
   color: #111827;
 }
 
 .em-sidebar-item--logout:hover svg {
   color: #111827;
 }
-
-

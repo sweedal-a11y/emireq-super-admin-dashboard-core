@@ -1,7 +1,7 @@
 /* Startup Overview Styles */
 .em-startup-overview {
   min-height: 100vh;
-  background-color: var(--bg-primary);
+  background-color: #fafafa;
   color: var(--text-primary);
   transition: all 0.3s ease;
 }
@@ -11,9 +11,45 @@
 }
 
 .em-startup-overview-content {
-  padding: 24px;
+  padding: 16px 32px 32px 32px;
   max-width: 100%;
   margin: 0 auto;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-title {
+  font-size: 28px;
+  font-weight: 500;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.dashboard-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Dashboard Grid Layouts */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.dashboard-left {
+  min-height: 280px;
+}
+
+.dashboard-right {
+  min-height: 280px;
 }
 
 /* Page Intro */
@@ -40,6 +76,18 @@ body[data-theme="dark"] .em-startup-overview {
   color: #f1f5f9;
 }
 
+.em-startup-overview.dark-mode {
+  background-color: #0f172a;
+}
+
+body[data-theme="dark"] .dashboard-title {
+  color: #f8fafc;
+}
+
+body[data-theme="dark"] .dashboard-subtitle {
+  color: #94a3b8;
+}
+
 body[data-theme="dark"] .em-page-title {
   color: #f1f5f9;
 }
@@ -47,6 +95,75 @@ body[data-theme="dark"] .em-page-title {
 body[data-theme="dark"] .em-page-subtitle {
   color: #94a3b8;
 }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .em-startup-overview-content {
+    padding: 24px;
+  }
+  
+  .dashboard-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .em-startup-overview-content {
+    padding: 20px;
+  }
+  
+  .dashboard-header {
+    margin-bottom: 24px;
+  }
+  
+  .dashboard-title {
+    font-size: 22px;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 13px;
+  }
+  
+  .dashboard-grid {
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .em-startup-overview-content {
+    padding: 16px;
+  }
+  
+  .dashboard-title {
+    font-size: 20px;
+  }
+}
+
+/* Sidebar Collapsed Adjustments */
+.em-startup-overview--sidebar-collapsed .em-startup-overview-content {
+  max-width: 100%;
+}
+
+/* Dark mode via prefers-color-scheme */
+@media (prefers-color-scheme: dark) {
+  .em-startup-overview {
+    background-color: #0f172a;
+  }
+  
+  .dashboard-title {
+    color: #f8fafc;
+  }
+  
+  .dashboard-subtitle {
+    color: #94a3b8;
+  }
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {

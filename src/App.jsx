@@ -18,6 +18,7 @@ import InvestorNetworkPage from "./pages/investor-network/InvestorNetworkPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 import MyProfile from "./pages/MyProfile";
 import Login from "./pages/auth/Login";
+import ForgotPassword1 from "./pages/auth/ForgotPassword1";
 import "./App.css";
 
 function AppContent() {
@@ -148,6 +149,7 @@ function AppContent() {
           <Route path="/settings" element={<SettingsPage isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />} />
           <Route path="/profile" element={<MyProfile toggleTheme={toggleTheme} />} />
           <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/ForgotPassword1" element={<ForgotPassword1 />} />
         </Routes>
       </main>
 

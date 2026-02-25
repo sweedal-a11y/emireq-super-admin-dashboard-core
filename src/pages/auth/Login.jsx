@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 // Import your assets like this in your project:
@@ -11,6 +12,7 @@ const Login = () => {
   const [globalError, setGlobalError] = useState("");
   const [keepSignedIn, setKeepSignedIn] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // ── Validation helpers ──────────────────────────────────────────────────────
   const validateField = (name, value) => {
@@ -174,9 +176,14 @@ const Login = () => {
                 <span className="checkbox-custom" />
                 Keep me signed in
               </label>
-              <a href="#" className="forgot-link">
+              <button
+                type="button"
+                className="forgot-link"
+                style={{ background: "none", border: "none", padding: 0, color: "#3f51b5", cursor: "pointer" }}
+                onClick={() => navigate("/auth/ForgotPassword1")}
+              >
                 Forget Password
-              </a>
+              </button>
             </div>
           </form>
 

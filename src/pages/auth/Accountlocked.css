@@ -1,0 +1,328 @@
+/* ════════════════════════════════════════════
+   ACCOUNT LOCKED PAGE
+   ════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.al-page {
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+/* ── Header ── */
+.al-header {
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+}
+
+.al-logo {
+  height: 32px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.al-logo:hover {
+  opacity: 0.85;
+}
+
+.al-logo-fallback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.al-logo-icon {
+  width: 34px;
+  height: 34px;
+  background: #f5a623;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.al-logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: -0.5px;
+}
+
+/* ── Main ── */
+.al-main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 20px 0 20px;
+  margin-top: 0;
+}
+
+/* ── Card ── */
+.al-card {
+  width: 100%;
+  max-width: 840px;
+  background: #f8fafc;
+  border: 1px solid #e9edf2;
+  border-radius: 20px;
+  padding: 52px 56px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle radial gradient overlay on card */
+.al-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle at 15% 20%,
+      rgba(219, 234, 254, 0.45) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(219, 234, 254, 0.3) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+  border-radius: 20px;
+}
+
+.al-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Illustration ── */
+.al-illustration {
+  margin-bottom: 28px;
+}
+
+.al-shield-svg {
+  width: 88px;
+  height: 88px;
+  filter: drop-shadow(0 4px 16px rgba(59, 130, 246, 0.18));
+}
+
+/* ── Title ── */
+.al-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  text-align: center;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+/* ── Subtitle ── */
+.al-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1.6;
+  margin: 0 0 28px 0;
+}
+
+/* ── Warning box ── */
+.al-warning-box {
+  width: 100%;
+  max-width: 560px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 36px;
+}
+
+.al-warning-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.al-warn-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.al-warning-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #92400e;
+  line-height: 1.3;
+}
+
+.al-warning-body {
+  font-size: 14px;
+  color: #b45309;
+  line-height: 1.6;
+  margin: 0;
+  padding-left: 30px;
+}
+
+/* ── Button row ── */
+.al-btn-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  max-width: 520px;
+  justify-content: center;
+}
+
+/* Secondary button */
+.al-btn-secondary {
+  flex: 1;
+  height: 52px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  outline: none;
+}
+
+.al-btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.al-btn-secondary:active {
+  transform: scale(0.99);
+  background: #f3f4f6;
+}
+
+.al-btn-secondary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  border-color: #6366f1;
+}
+
+/* Primary button */
+.al-btn-primary {
+  flex: 1;
+  height: 52px;
+  border: none;
+  border-radius: 12px;
+  background: #fbbf24;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1c1917;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  outline: none;
+}
+
+.al-btn-primary:hover {
+  background: #f59e0b;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+}
+
+.al-btn-primary:active {
+  transform: scale(0.99);
+  background: #d97706;
+}
+
+.al-btn-primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.3);
+}
+
+/* ── Footer ── */
+.al-footer {
+  padding: 28px 20px 32px;
+  text-align: center;
+}
+
+.al-footer-text {
+  font-size: 14px;
+  color: #9ca3af;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.al-footer-link {
+  color: #374151;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease;
+}
+
+.al-footer-link:hover {
+  color: #f5a623;
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  .al-header {
+    padding: 20px 24px;
+  }
+
+  .al-card {
+    padding: 36px 24px 32px;
+    border-radius: 16px;
+  }
+
+  .al-title {
+    font-size: 22px;
+  }
+
+  .al-subtitle {
+    font-size: 14px;
+  }
+
+  .al-btn-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .al-btn-secondary,
+  .al-btn-primary {
+    width: 100%;
+    flex: none;
+  }
+
+  .al-warning-body {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .al-shield-svg {
+    width: 72px;
+    height: 72px;
+  }
+
+  .al-title {
+    font-size: 20px;
+  }
+}

@@ -19,6 +19,9 @@ import SettingsPage from "./pages/settings/SettingsPage";
 import MyProfile from "./pages/MyProfile";
 import Login from "./pages/auth/Login";
 import ForgotPassword1 from "./pages/auth/ForgotPassword1";
+import ForgotPassword2 from "./pages/auth/ForgotPassword2";
+import TwoFactorAuth from "./pages/auth/Twofactorauth";
+import AccountLocked from "./pages/auth/Accountlocked";
 import "./App.css";
 
 function AppContent() {
@@ -150,6 +153,9 @@ function AppContent() {
           <Route path="/profile" element={<MyProfile toggleTheme={toggleTheme} />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/ForgotPassword1" element={<ForgotPassword1 />} />
+          <Route path="/auth/ForgotPassword2" element={<ForgotPassword2 />} />
+          <Route path="/auth/Twofactorauth" element={<TwoFactorAuth />} />
+          <Route path="/auth/Accountlocked" element={<AccountLocked />} />
         </Routes>
       </main>
 

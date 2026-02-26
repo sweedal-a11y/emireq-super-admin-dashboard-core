@@ -35,8 +35,7 @@ const ForgotPassword1 = () => {
     // simulate API
     setTimeout(() => {
       setLoading(false);
-      alert("Reset link sent successfully!");
-      navigate("/login");
+      navigate("/auth/ForgotPassword2");
     }, 1500);
   };
 

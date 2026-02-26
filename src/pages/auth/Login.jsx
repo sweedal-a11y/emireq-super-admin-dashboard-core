@@ -65,7 +65,7 @@ const Login = () => {
       formData.username === "admin" &&
       formData.password === "password123"
     ) {
-      alert("Login successful! Redirecting to dashboard…");
+      navigate("/auth/Twofactorauth");
     } else {
       // Mimic the figma states: wrong username / wrong password
       const newErrors = {};

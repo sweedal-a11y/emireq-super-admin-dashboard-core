@@ -2,506 +2,485 @@ import React, { useState } from 'react';
 import './MetaversePage.css';
 import Header from '../../components/header/Header';
 
+// Platform avatar colors
+const platformColorMap = {
+  'Decentraland':  '#7c3aed',
+  'The Sandbox':   '#db2777',
+  'Somnium Space': '#2563eb',
+  'Spatial':       '#ea580c',
+  'Others':        '#6b7280',
+};
+
 const MetaversePage = ({ isDarkMode, toggleTheme, sidebarCollapsed }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+  const [hoveredLegend, setHoveredLegend] = useState(null);
+  const [hoveredBarLegend, setHoveredBarLegend] = useState(null);
+  const [lineTooltip, setLineTooltip] = useState(null);
 
   const resultsPerPage = 4;
   const totalResults = 100;
   const totalPages = Math.ceil(totalResults / resultsPerPage);
 
-  // Stats data
+  // ── Stats ──
   const stats = [
     {
       id: 1,
-      icon: 'platforms',
-      iconColor: '#10B981',
-      iconBg: '#D1FAE5',
-      label: 'Active Platforms',
-      value: '5',
-      subtext: 'Decentralized Sandbox mins',
-      change: '+Active',
-      isPositive: true
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.97 12.92C2.67476 13.0974 2.43033 13.348 2.26039 13.6476C2.09045 13.9472 2.00075 14.2856 2 14.63V17.87C2.00075 18.2144 2.09045 18.5528 2.26039 18.8524C2.43033 19.152 2.67476 19.4026 2.97 19.58L5.97 21.38C6.28106 21.5669 6.63711 21.6656 7 21.6656C7.36289 21.6656 7.71894 21.5669 8.03 21.38L12 19V13.5L7 10.5L2.97 12.92Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M7.00001 16.5L2.26001 13.65" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M7 16.5L12 13.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M7 16.5V21.67" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 13.5V19L15.97 21.38C16.2811 21.5669 16.6371 21.6656 17 21.6656C17.3629 21.6656 17.7189 21.5669 18.03 21.38L21.03 19.58C21.3252 19.4026 21.5697 19.152 21.7396 18.8524C21.9096 18.5528 21.9992 18.2144 22 17.87V14.63C21.9992 14.2856 21.9096 13.9472 21.7396 13.6476C21.5697 13.348 21.3252 13.0974 21.03 12.92L17 10.5L12 13.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M17 16.5L12 13.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M17 16.5L21.74 13.65" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M17 16.5V21.67" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M7.97 4.41997C7.67476 4.59735 7.43033 4.84797 7.26039 5.14756C7.09045 5.44714 7.00075 5.78554 7 6.12997V10.5L12 13.5L17 10.5V6.12997C16.9992 5.78554 16.9096 5.44714 16.7396 5.14756C16.5697 4.84797 16.3252 4.59735 16.03 4.41997L13.03 2.61997C12.7189 2.43308 12.3629 2.33435 12 2.33435C11.6371 2.33435 11.2811 2.43308 10.97 2.61997L7.97 4.41997Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 8.00002L7.26001 5.15002" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 8.00002L16.74 5.15002" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 13.5V8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      iconBg: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+      label: 'Active Platforms', value: '5', subtext: 'Decentraland, Sandbox, more',
+      change: 'Active', changeColor: '#16a34a', changeBg: '#dcfce7', changeBorder: '#bbf7d0',
     },
     {
       id: 2,
-      icon: 'events',
-      iconColor: '#8B5CF6',
-      iconBg: '#EDE9FE',
-      label: 'Virtual Events',
-      value: '18',
-      subtext: '15 upcoming this month',
-      change: '+3 this month',
-      isPositive: true
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="18" height="16" rx="3" stroke="#fff" strokeWidth="2" fill="none"/>
+          <path d="M8 2v4M16 2v4M3 9h18" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+      ),
+      iconBg: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
+      label: 'Virtual Events', value: '18', subtext: '5 upcoming this month',
+      change: '+3 this month', changeColor: '#be185d', changeBg: '#fce7f3', changeBorder: '#fbcfe8',
     },
     {
       id: 3,
-      icon: 'attendees',
-      iconColor: '#3B82F6',
-      iconBg: '#DBEAFE',
-      label: 'Total Attendees',
-      value: '2,450',
-      subtext: 'Across this month',
-      change: '+18% growth',
-      isPositive: true
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="9" cy="8" r="3" stroke="#fff" strokeWidth="2" fill="none"/>
+          <circle cx="15" cy="8" r="3" stroke="#fff" strokeWidth="2" fill="none"/>
+          <path d="M3 20c0-3.31 2.69-6 6-6h6c3.31 0 6 2.69 6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" fill="none"/>
+        </svg>
+      ),
+      iconBg: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+      label: 'Total Attendees', value: '2,450', subtext: 'Across last month',
+      change: '+18% growth', changeColor: '#1d4ed8', changeBg: '#dbeafe', changeBorder: '#bfdbfe',
     },
     {
       id: 4,
-      icon: 'parcels',
-      iconColor: '#A855F7',
-      iconBg: '#F3E8FF',
-      label: 'Virtual Land Parcels',
-      value: '12',
-      subtext: 'Across 4 platforms',
-      change: '$200K value',
-      isPositive: true
-    }
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="#fff" strokeWidth="2" fill="none"/>
+          <circle cx="12" cy="9" r="2.5" stroke="#fff" strokeWidth="2" fill="none"/>
+        </svg>
+      ),
+      iconBg: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)',
+      label: 'Virtual Land Parcels', value: '12', subtext: 'Across 4 platforms',
+      change: '$420K value', changeColor: '#6d28d9', changeBg: '#ede9fe', changeBorder: '#ddd6fe',
+    },
   ];
 
-  // Platform distribution data
+  // ── Donut data ──
   const platformData = [
-    { name: 'Decentraland', value: 8, color: '#EC4899', percentage: '40%' },
-    { name: 'The Sandbox', value: 5, color: '#8B5CF6', percentage: '25%' },
-    { name: 'Somnium Space', value: 4, color: '#3B82F6', percentage: '20%' },
-    { name: 'Spatial', value: 2, color: '#F59E0B', percentage: '10%' },
-    { name: 'Others', value: 1, color: '#6B7280', percentage: '5%' }
+    { label: 'Decentraland',  count: 6, color: '#a855f7' },
+    { label: 'The Sandbox',   count: 5, color: '#ec4899' },
+    { label: 'Somnium Space', count: 4, color: '#3b82f6' },
+    { label: 'Spatial',       count: 2, color: '#f97316' },
+    { label: 'Others',        count: 1, color: '#9ca3af' },
   ];
 
-  // Events data
+  // ── Line chart ──
+  const lineMonths  = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+  const lineSeries1 = [550, 620, 580, 700, 680, 850, 900];
+  const lineSeries2 = [600, 650, 610, 630, 670, 640, 660];
+  const svgW = 500, svgH = 220, padL = 44, padR = 16, padT = 16, padB = 32;
+  const chartW = svgW - padL - padR;
+  const chartH = svgH - padT - padB;
+  const maxVal = 1200;
+  const yLines = [0, 300, 600, 900, 1200];
+  const px = (i) => padL + (i / (lineMonths.length - 1)) * chartW;
+  const py = (v) => padT + chartH - (v / maxVal) * chartH;
+  const pathD = (arr) => arr.map((v, i) => `${i === 0 ? 'M' : 'L'}${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
+  const areaD = (arr) =>
+    `${pathD(arr)} L${px(arr.length - 1).toFixed(1)},${(padT + chartH).toFixed(1)} L${padL},${(padT + chartH).toFixed(1)} Z`;
+
+  // ── Table data ──
   const allEvents = [
-    {
-      id: 1,
-      name: 'Startup Pitch Day',
-      platform: 'Decentraland',
-      date: '2025-08-15',
-      time: '14:00-17:00',
-      attendees: 350,
-      status: 'Confirmed',
-      iconBg: '#DBEAFE'
-    },
-    {
-      id: 2,
-      name: 'Investor Networking',
-      platform: 'The Sandbox',
-      date: '2025-08-18',
-      time: '16:00-18:00',
-      attendees: 200,
-      status: 'Scheduled',
-      iconBg: '#EDE9FE'
-    },
-    {
-      id: 3,
-      name: 'Islamic Finance Summit',
-      platform: 'Somnium Space',
-      date: '2025-08-16',
-      time: '10:00-16:00',
-      attendees: 500,
-      status: 'Pending',
-      iconBg: '#FEF3C7'
-    },
-    {
-      id: 4,
-      name: 'Tech Innovation Fair',
-      platform: 'Spatial',
-      date: '2025-08-20',
-      time: '12:00-15:00',
-      attendees: 180,
-      status: 'Confirmed',
-      iconBg: '#D1FAE5'
-    }
+    { id: 1, name: 'Startup Pitch Day',      platform: 'Decentraland',  date: '2025-08-15', time: '14:00–17:00', attendees: 350, status: 'Confirmed' },
+    { id: 2, name: 'Investor Networking',    platform: 'The Sandbox',   date: '2025-08-15', time: '16:00–18:00', attendees: 200, status: 'Scheduled' },
+    { id: 3, name: 'Islamic Finance Summit', platform: 'Somnium Space', date: '2025-08-15', time: '10:00–16:00', attendees: 500, status: 'Planning'  },
+    { id: 4, name: 'NFT Art Gallery',        platform: 'Spatial',       date: '2025-09-01', time: '11:00–14:00', attendees: 150, status: 'Confirmed' },
+    { id: 5, name: 'Web3 Founders Meet',     platform: 'Decentraland',  date: '2025-09-05', time: '09:00–12:00', attendees: 300, status: 'Scheduled' },
+    { id: 6, name: 'DeFi Summit',            platform: 'The Sandbox',   date: '2025-09-10', time: '13:00–16:00', attendees: 400, status: 'Planning'  },
   ];
 
   const filteredEvents = allEvents.filter(event => {
-    const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         event.platform.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'All' || event.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesSearch =
+      event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.platform.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesStatus && matchesSearch;
   });
 
-  // Donut chart calculations
-  const calculateDonutSegments = () => {
-    let currentAngle = 0;
-    return platformData.map(item => {
-      const percentage = parseInt(item.percentage) / 100;
-      const angle = percentage * 360;
-      const segment = {
-        ...item,
-        startAngle: currentAngle,
-        endAngle: currentAngle + angle
-      };
-      currentAngle += angle;
-      return segment;
-    });
-  };
-
-  const renderStatIcon = (iconType, color) => {
-    const icons = {
-      platforms: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="3" width="7" height="7" rx="2" stroke={color} strokeWidth="2"/>
-          <rect x="14" y="3" width="7" height="7" rx="2" stroke={color} strokeWidth="2"/>
-          <rect x="3" y="14" width="7" height="7" rx="2" stroke={color} strokeWidth="2"/>
-          <rect x="14" y="14" width="7" height="7" rx="2" stroke={color} strokeWidth="2"/>
-        </svg>
-      ),
-      events: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="9" stroke={color} strokeWidth="2"/>
-          <path d="M12 7V12L15 15" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </svg>
-      ),
-      attendees: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <circle cx="9" cy="7" r="4" stroke={color} strokeWidth="2"/>
-          <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
-      parcels: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 16V8C20.9996 7.64927 20.9071 7.30481 20.7315 7.00116C20.556 6.69751 20.3037 6.44536 20 6.27L13 2.27C12.696 2.09446 12.3511 2.00205 12 2.00205C11.6489 2.00205 11.304 2.09446 11 2.27L4 6.27C3.69626 6.44536 3.44398 6.69751 3.26846 7.00116C3.09294 7.30481 3.00036 7.64927 3 8V16C3.00036 16.3507 3.09294 16.6952 3.26846 16.9988C3.44398 17.3025 3.69626 17.5546 4 17.73L11 21.73C11.304 21.9055 11.6489 21.9979 12 21.9979C12.3511 21.9979 12.696 21.9055 13 21.73L20 17.73C20.3037 17.5546 20.556 17.3025 20.7315 16.9988C20.9071 16.6952 20.9996 16.3507 21 16Z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M3.27 6.96L12 12.01L20.73 6.96" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 22.08V12" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
-    };
-    return icons[iconType] || null;
-  };
-
+  // ── Pagination numbers ──
   const getPageNumbers = () => {
     const pages = [];
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i);
-    } else {
-      pages.push(1);
-      if (currentPage > 3) pages.push('...');
-      if (currentPage > 2) pages.push(currentPage - 1);
-      if (currentPage !== 1 && currentPage !== totalPages) pages.push(currentPage);
-      if (currentPage < totalPages - 1) pages.push(currentPage + 1);
-      if (totalPages > 1) {
-        if (currentPage < totalPages - 1) pages.push('...');
-        pages.push(totalPages);
-      }
+    pages.push(1);
+    if (currentPage > 2) pages.push(currentPage - 1);
+    if (currentPage !== 1 && currentPage !== totalPages) pages.push(currentPage);
+    if (currentPage < totalPages - 1) pages.push(currentPage + 1);
+    if (totalPages > 1) {
+      if (currentPage < totalPages - 1) pages.push('...');
+      pages.push(totalPages);
     }
     return [...new Set(pages)];
   };
 
-  const donutSegments = calculateDonutSegments();
+  // ── Reusable action buttons SVG ──
+  const ActionButtons = ({ filterId, style }) => (
+    <svg
+      width="102"
+      height="40"
+      viewBox="0 0 102 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ cursor: 'pointer', flexShrink: 0, ...style }}
+      onClick={() => {}}
+    >
+      <g filter={`url(#${filterId})`}>
+        <rect x="2" y="1" width="98" height="36" rx="12" fill="white" shapeRendering="crispEdges"/>
+        <rect x="2.5" y="1.5" width="97" height="35" rx="11.5" stroke="#E0E0E0" shapeRendering="crispEdges"/>
+        <path d="M20 26H15V21M24 12H29V17" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M54.7697 12.1712C55.4037 11.5401 56.429 11.5413 57.0616 12.1739L58.8289 13.9412C59.4614 14.5737 59.4627 15.5987 58.8318 16.2328L48.6732 26.4433L44.5593 26.4433L44.5593 22.3342L54.7697 12.1712Z" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M53.4805 13.463L57.5368 17.5193" stroke="#888888" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M76 17.1504C76.5099 17.1504 76.9425 17.3302 77.3066 17.6943C77.6708 18.0585 77.8502 18.4909 77.8496 19L77.8418 19.1875C77.8024 19.617 77.6243 19.988 77.3057 20.3066C76.9415 20.6708 76.5091 20.8502 76 20.8496C75.4901 20.8496 75.0575 20.6698 74.6934 20.3057C74.3292 19.9415 74.1498 19.5091 74.1504 19C74.1504 18.4901 74.3302 18.0575 74.6943 17.6934C75.0129 17.3748 75.3837 17.1971 75.8125 17.1582L76 17.1504ZM82 17.1504C82.5099 17.1504 82.9425 17.3302 83.3066 17.6943C83.6708 18.0585 83.8502 18.4909 83.8496 19L83.8418 19.1875C83.8024 19.617 83.6243 19.988 83.3057 20.3066C82.9415 20.6708 82.5091 20.8502 82 20.8496C81.4901 20.8496 81.0575 20.6698 80.6934 20.3057C80.3292 19.9415 80.1498 19.5091 80.1504 19C80.1504 18.4901 80.3302 18.0575 80.6943 17.6934C81.0129 17.3748 81.3837 17.1971 81.8125 17.1582L82 17.1504ZM88 17.1504C88.5099 17.1504 88.9425 17.3302 89.3066 17.6943C89.6708 18.0585 89.8502 18.4909 89.8496 19L89.8418 19.1875C89.8024 19.617 89.6243 19.988 89.3057 20.3066C88.9415 20.6708 88.5091 20.8502 88 20.8496C87.4901 20.8496 87.0575 20.6698 86.6934 20.3057C86.3292 19.9415 86.1498 19.5091 86.1504 19C86.1504 18.4901 86.3302 18.0575 86.6943 17.6934C87.0129 17.3748 87.3837 17.1971 87.8125 17.1582L88 17.1504Z" fill="#888888" stroke="white" strokeWidth="0.3"/>
+      </g>
+      <defs>
+        <filter id={filterId} x="0" y="0" width="102" height="40" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+          <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+          <feOffset dy="1"/>
+          <feGaussianBlur stdDeviation="1"/>
+          <feComposite in2="hardAlpha" operator="out"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+        </filter>
+      </defs>
+    </svg>
+  );
+
+  // ── Info icon ──
+ const InfoIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ cursor: 'pointer' }}
+  >
+    <circle cx="8" cy="8" r="8" fill="#AFAFAF"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M9.30469 5.24219C9.42969 5.02344 9.5 4.76953 9.5 4.5C9.5 3.67188 8.82812 3 8 3C7.17188 3 6.5 3.67188 6.5 4.5C6.5 5.32812 7.17188 6 8 6C8.55859 6 9.04688 5.69531 9.30469 5.24219ZM7 7H7.5H8.5C9.05273 7 9.5 7.44727 9.5 8V9V13C9.5 13.5527 9.05273 14 8.5 14C7.94727 14 7.5 13.5527 7.5 13V9.75C7.5 9.33594 7.16406 9 6.75 9C6.33594 9 6 8.66406 6 8.25V8C6 7.64844 6.18164 7.33789 6.45508 7.16016C6.61133 7.05859 6.79883 7 7 7Z" fill="white"/>
+  </svg>
+);
 
   return (
     <div className="metaverse-page">
-      <Header 
-        isDarkMode={isDarkMode} 
+      <Header
+        isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
         sidebarCollapsed={sidebarCollapsed}
       />
-      
-      <div className="metaverse-content">
-        <div className="metaverse-header">
-          <div>
-            <h1>Metaverse Initiatives</h1>
-            <p className="subtitle">Track metaverse events, platforms, and virtual engagement</p>
-          </div>
-        </div>
 
-        {/* Stats Cards */}
-        <div className="stats-grid">
-          {stats.map(stat => (
-            <div key={stat.id} className="stat-card">
-              <div className="stat-icon" style={{ backgroundColor: stat.iconBg }}>
-                {renderStatIcon(stat.icon, stat.iconColor)}
+      {/* ── Page Header ── */}
+      <div className="metaverse-header">
+        <div>
+          <h1>Metaverse Initiatives</h1>
+          <p className="subtitle">Track metaverse events, platforms, and virtual engagement</p>
+        </div>
+      </div>
+
+      {/* ── Stats Cards ── */}
+      <div className="stats-grid">
+        {stats.map(stat => (
+          <div key={stat.id} className="stat-card">
+            <div className="stat-card-header">
+              <div className="stat-icon" style={{ background: stat.iconBg }}>
+                {stat.icon}
               </div>
-              <div className="stat-content">
-                <p className="stat-label">{stat.label}</p>
-                <h3 className="stat-value">{stat.value}</h3>
-                <p className="stat-subtext">{stat.subtext}</p>
-              </div>
-              <div className={`stat-change ${stat.isPositive ? 'positive' : 'neutral'}`}>
+              <div
+                className="stat-badge"
+                style={{ color: stat.changeColor, background: stat.changeBg, borderColor: stat.changeBorder }}
+              >
                 {stat.change}
               </div>
             </div>
-          ))}
-        </div>
+            <div className="stat-content">
+              <p className="stat-label">{stat.label}</p>
+              <h3 className="stat-value">{stat.value}</h3>
+              <p className="stat-subtext">{stat.subtext}</p>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Charts Row */}
-        <div className="charts-row">
-          {/* Event Distribution by Platform */}
-          <div className="chart-card">
-            <div className="chart-header">
-              <div>
+      {/* ── Charts Row ── */}
+      <div className="charts-row">
+
+        {/* ── Donut – Event Distribution ── */}
+        <div className="chart-card">
+          <div className="chart-header">
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <h3>Event Distribution by Platform</h3>
-                <p className="chart-subtitle">Events scheduled across metaverse platforms</p>
+                <InfoIcon />
               </div>
-              <button className="info-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.5"/>
-                  <path d="M10 14V10M10 6H10.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              </button>
+              <p className="chart-subtitle">Events scheduled across metaverse platforms</p>
             </div>
-            <div className="chart-content">
-              <svg className="donut-chart" viewBox="0 0 200 200">
-                {donutSegments.map((segment, index) => {
-                  const centerX = 100;
-                  const centerY = 100;
-                  const radius = 70;
-                  const innerRadius = 45;
-                  
-                  const startAngle = (segment.startAngle - 90) * (Math.PI / 180);
-                  const endAngle = (segment.endAngle - 90) * (Math.PI / 180);
-                  
-                  const x1 = centerX + radius * Math.cos(startAngle);
-                  const y1 = centerY + radius * Math.sin(startAngle);
-                  const x2 = centerX + radius * Math.cos(endAngle);
-                  const y2 = centerY + radius * Math.sin(endAngle);
-                  
-                  const ix1 = centerX + innerRadius * Math.cos(startAngle);
-                  const iy1 = centerY + innerRadius * Math.sin(startAngle);
-                  const ix2 = centerX + innerRadius * Math.cos(endAngle);
-                  const iy2 = centerY + innerRadius * Math.sin(endAngle);
-                  
-                  const largeArc = segment.endAngle - segment.startAngle > 180 ? 1 : 0;
-                  
-                  const pathData = [
-                    `M ${x1} ${y1}`,
-                    `A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`,
-                    `L ${ix2} ${iy2}`,
-                    `A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${ix1} ${iy1}`,
-                    'Z'
-                  ].join(' ');
-                  
-                  return (
-                    <path
-                      key={index}
-                      d={pathData}
-                      fill={segment.color}
-                      className="donut-segment"
-                    />
-                  );
-                })}
-              </svg>
-              <div className="chart-legend">
-                {platformData.map((item, index) => (
-                  <div key={index} className="legend-item">
-                    <div className="legend-marker" style={{ backgroundColor: item.color }}></div>
-                    <span className="legend-label">{item.name}</span>
-                    <span className="legend-value">{item.value} events</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ActionButtons filterId="filter_donut" style={{ transform: 'translateY(-26px)' }} />
           </div>
 
-          {/* Monthly Attendee Growth */}
-          <div className="chart-card">
-            <div className="chart-header">
-              <div>
-                <h3>Monthly Attendee Growth</h3>
-                <p className="chart-subtitle">Cumulative attendance trend over time</p>
+          <div className="donut-chart-container">
+            <svg className="donut-chart" viewBox="0 0 488 346" fill="none">
+              <path d="M201.081 38.8856C200.448 36.9408 201.511 34.8466 203.471 34.2643C226.304 27.4819 250.482 26.4638 273.838 31.3284C297.194 36.193 318.955 46.7797 337.181 62.1138C338.746 63.4304 338.884 65.7748 337.528 67.3053L309.422 99.0186C308.066 100.549 305.73 100.684 304.148 99.3888C292.427 89.7965 278.55 83.159 263.687 80.0633C248.824 76.9676 233.452 77.513 218.876 81.6281C216.908 82.1837 214.82 81.1275 214.188 79.1827L201.081 38.8856Z"
+                fill="#a855f7"
+                className={`donut-segment ${hoveredLegend === 'Decentraland' ? 'highlighted' : hoveredLegend ? 'dimmed' : ''}`}
+              />
+              <path d="M151.689 277.536C150.337 279.07 147.993 279.221 146.495 277.829C129.118 261.696 115.98 241.506 108.272 219.042C100.162 195.41 98.3409 170.075 102.987 145.526C107.633 120.976 118.586 98.0587 134.771 79.0243C150.155 60.9311 169.762 46.9386 191.832 38.2704C193.736 37.5228 195.862 38.5193 196.561 40.4413L211.033 80.2702C211.732 82.1923 210.736 84.3098 208.843 85.0832C194.888 90.7844 182.486 99.7594 172.697 111.272C162.108 123.726 154.941 138.721 151.901 154.783C148.861 170.845 150.053 187.422 155.359 202.884C160.264 217.177 168.528 230.063 179.436 240.47C180.915 241.882 181.068 244.217 179.715 245.751L151.689 277.536Z"
+                fill="#ec4899"
+                className={`donut-segment ${hoveredLegend === 'The Sandbox' ? 'highlighted' : hoveredLegend ? 'dimmed' : ''}`}
+              />
+              <path d="M340.929 70.4209C342.335 68.9359 344.683 68.8685 346.131 70.3121C371.606 95.7018 386.69 129.749 388.327 165.767C390.019 203.021 377.194 239.478 352.549 267.466C327.905 295.454 293.364 312.79 256.196 315.825C220.26 318.76 184.577 308.105 156.168 286.048C154.553 284.794 154.323 282.456 155.618 280.874L182.456 248.081C183.751 246.499 186.081 246.273 187.713 247.505C206.132 261.408 229.058 268.095 252.144 266.21C276.463 264.224 299.063 252.881 315.188 234.568C331.313 216.256 339.705 192.402 338.597 168.027C337.546 144.887 328.012 122.992 311.889 106.48C310.461 105.017 310.39 102.678 311.796 101.193L340.929 70.4209Z"
+                fill="#3b82f6"
+                className={`donut-segment ${hoveredLegend === 'Somnium Space' ? 'highlighted' : hoveredLegend ? 'dimmed' : ''}`}
+              />
+              <circle cx="244.475" cy="172.303" r="149.4" stroke="#DFDFF2" strokeWidth="1.2" fill="none" className="donut-border"/>
+            </svg>
+          </div>
+
+          <div className="chart-legend">
+            {platformData.map((item, index) => (
+              <div
+                key={index}
+                className="legend-item"
+                onMouseEnter={() => setHoveredLegend(item.label)}
+                onMouseLeave={() => setHoveredLegend(null)}
+              >
+                <span className="legend-dot" style={{ backgroundColor: item.color }}></span>
+                <span className="legend-label">{item.label}</span>
+                <span className="legend-count">{item.count} events</span>
               </div>
-              <button className="chart-action">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" strokeWidth="1.5"/>
-                  <path d="M19 19L14.65 14.65" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-              </button>
-            </div>
-            <div className="growth-chart">
-              <div className="growth-tooltip">
-                <span className="tooltip-label">JUN</span>
-                <span className="tooltip-value">Attendees: 800</span>
-              </div>
-              <svg className="line-chart" viewBox="0 0 400 200" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3"/>
-                    <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.05"/>
-                  </linearGradient>
-                  <linearGradient id="areaGradient2" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#EF4444" stopOpacity="0.2"/>
-                    <stop offset="100%" stopColor="#EF4444" stopOpacity="0.05"/>
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M 0 120 L 66 100 L 133 110 L 200 95 L 266 105 L 333 70 L 400 50 L 400 200 L 0 200 Z"
-                  fill="url(#areaGradient)"
-                />
-                <path
-                  d="M 0 140 L 66 125 L 133 130 L 200 120 L 266 125 L 333 100 L 400 90 L 400 200 L 0 200 Z"
-                  fill="url(#areaGradient2)"
-                />
-                <path
-                  d="M 0 120 L 66 100 L 133 110 L 200 95 L 266 105 L 333 70 L 400 50"
-                  stroke="#3B82F6"
-                  strokeWidth="2"
-                  fill="none"
-                />
-              </svg>
-              <div className="chart-x-axis">
-                <span>Jan</span>
-                <span>Feb</span>
-                <span>Mar</span>
-                <span>Apr</span>
-                <span>May</span>
-                <span>Jun</span>
-                <span>Jul</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Events Table */}
-        <div className="table-section">
-          <div className="table-header">
-            <div className="table-title-group">
-              <h2 className="table-title">
-                Metaverse Events
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="8" cy="8" r="7" stroke="#9CA3AF" strokeWidth="1.5"/>
-                  <path d="M8 7V11M8 5h.01" stroke="#9CA3AF" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-              </h2>
-              <p className="table-subtitle">Scheduled virtual events across platforms</p>
+        {/* ── Line Chart – Monthly Attendee Growth ── */}
+        <div className="chart-card">
+          <div className="chart-header">
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <h3>Monthly Attendee Growth</h3>
+                <InfoIcon />
+              </div>
+              <p className="chart-subtitle">Cumulative attendance trend over time</p>
             </div>
+            <ActionButtons filterId="filter_line" style={{ transform: 'translateY(-26px)' }} />
           </div>
 
-          <div className="table-filters">
-            <div className="filter-dropdown">
-              <button 
-                className="filter-button"
-                onClick={() => setShowStatusDropdown(!showStatusDropdown)}
-              >
-                <span>Status</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 5L6 8L9 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              {showStatusDropdown && (
-                <div className="dropdown-menu">
-                  {['All', 'Confirmed', 'Scheduled', 'Pending'].map(status => (
-                    <div
-                      key={status}
-                      className="dropdown-item"
-                      onClick={() => {
-                        setStatusFilter(status);
-                        setShowStatusDropdown(false);
-                      }}
-                    >
-                      {status}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="search-container">
-              <svg className="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M19 19L14.65 14.65" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-              />
-            </div>
-          </div>
-
-          <div className="table-wrapper">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>EVENT NAME</th>
-                  <th>PLATFORM</th>
-                  <th>DATE</th>
-                  <th>TIME (UTC)</th>
-                  <th>EXPECTED ATTENDEES</th>
-                  <th>STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredEvents.length > 0 ? (
-                  filteredEvents.map((event) => (
-                    <tr key={event.id}>
-                      <td>
-                        <div className="event-cell">
-                          <div className="event-icon" style={{ backgroundColor: event.iconBg }}>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <circle cx="10" cy="10" r="8" fill="#3B82F6"/>
-                            </svg>
-                          </div>
-                          <span className="event-name">{event.name}</span>
-                        </div>
-                      </td>
-                      <td className="platform-cell">{event.platform}</td>
-                      <td className="date-cell">{event.date}</td>
-                      <td className="time-cell">{event.time}</td>
-                      <td className="attendees-cell">{event.attendees}</td>
-                      <td>
-                        <span className={`status-badge ${event.status.toLowerCase()}`}>
-                          {event.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="no-results">No events found matching your criteria</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="table-footer">
-            <div className="pagination-info">
-              <span>Showing </span>
-              <span className="page-number">{String(currentPage * resultsPerPage).padStart(2, '0')}</span>
-              <span> / {totalResults} Results</span>
-            </div>
-            
-            <div className="pagination-controls">
-              <button 
-                className="pagination-arrow"
-                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              
-              {getPageNumbers().map((page, index) => (
-                <button
-                  key={index}
-                  className={`pagination-page ${page === currentPage ? 'active' : ''} ${page === '...' ? 'ellipsis' : ''}`}
-                  onClick={() => typeof page === 'number' && setCurrentPage(page)}
-                  disabled={page === '...'}
-                >
-                  {page}
-                </button>
+          <div className="bar-chart-wrapper">
+            <svg
+              className="bar-chart-svg"
+              viewBox={`0 0 ${svgW} ${svgH}`}
+              onMouseLeave={() => setLineTooltip(null)}
+            >
+              <defs>
+                <linearGradient id="mvGrad1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.25"/>
+                  <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.02"/>
+                </linearGradient>
+                <linearGradient id="mvGrad2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#ec4899" stopOpacity="0.2"/>
+                  <stop offset="100%" stopColor="#ec4899" stopOpacity="0.02"/>
+                </linearGradient>
+              </defs>
+              {yLines.map((v) => (
+                <g key={v}>
+                  <line x1={padL} y1={py(v)} x2={padL + chartW} y2={py(v)} stroke="#F0F0F0" strokeWidth="1" strokeDasharray="4 3" className="grid-line"/>
+                  <text x={padL - 6} y={py(v) + 4} textAnchor="end" fontSize="10" fill="#888888" className="axis-label">{v}</text>
+                </g>
               ))}
-              
-              <button 
-                className="pagination-arrow"
-                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-            </div>
+              <path d={areaD(lineSeries1)} fill="url(#mvGrad1)"/>
+              <path d={areaD(lineSeries2)} fill="url(#mvGrad2)"/>
+              <path d={pathD(lineSeries1)} fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d={pathD(lineSeries2)} fill="none" stroke="#ec4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="5 3"/>
+              {lineSeries1.map((v, i) => (
+                <circle
+                  key={i} cx={px(i)} cy={py(v)} r="5"
+                  fill="#fff" stroke="#3b82f6" strokeWidth="2"
+                  style={{ cursor: 'crosshair' }}
+                  onMouseEnter={() => setLineTooltip({ x: px(i), y: py(v), month: lineMonths[i], val: v })}
+                />
+              ))}
+              {lineMonths.map((m, i) => (
+                <text key={i} x={px(i)} y={svgH - 4} textAnchor="middle" fontSize="10" fill="#888888" className="axis-label">{m}</text>
+              ))}
+              {lineTooltip && (
+                <g>
+                  <line x1={lineTooltip.x} y1={padT} x2={lineTooltip.x} y2={padT + chartH} stroke="#374151" strokeWidth="1" strokeDasharray="4 3"/>
+                  <rect x={lineTooltip.x - 52} y={lineTooltip.y - 46} width="100" height="38" rx="6" fill="#1f2937"/>
+                  <text x={lineTooltip.x - 2} y={lineTooltip.y - 29} textAnchor="middle" fontSize="11" fontWeight="700" fill="#fff">{lineTooltip.month.toUpperCase()}</text>
+                  <text x={lineTooltip.x - 2} y={lineTooltip.y - 14} textAnchor="middle" fontSize="10" fill="#d1d5db">Attendees – {lineTooltip.val}</text>
+                </g>
+              )}
+            </svg>
           </div>
 
-          <div className="table-disclaimer">
-            Market data is updated in real-time. Prices are for reference only and may vary across exchanges.
+          
+        </div>
+
+      </div>
+      {/* ── End Charts Row ── */}
+
+      {/* ── Table Section ── */}
+      <div className="table-section">
+        <div className="table-header">
+          <div className="table-title">
+            <h3>Metaverse Events</h3>
+            <InfoIcon />
           </div>
+          <p className="table-subtitle">Scheduled virtual events across platforms</p>
+        </div>
+
+        {/* Filters */}
+        <div className="tokenization-table-controls-figma">
+          <div className="tokenization-status-dropdown-figma">
+            <select
+              value={statusFilter}
+              onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+              className="tokenization-status-select-figma"
+            >
+              <option value="All">Status</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="Planning">Planning</option>
+            </select>
+            <div className="tokenization-status-arrows-figma">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M7.5 5.5L10.5 2.5L13.5 5.5" stroke="#121212" strokeWidth="1.13" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M13.5 10.5L10.5 13.5L7.5 10.5" stroke="#121212" strokeWidth="1.13" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div className="tokenization-search-container-figma">
+            <div className="tokenization-search-icon-figma">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="7.33333" cy="7.33333" r="5.33333" stroke="#121212" strokeWidth="1.13" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M14 14L11.1 11.1" stroke="#121212" strokeWidth="1.13" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+              className="tokenization-search-input-figma"
+            />
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="table-wrapper">
+          <table className="tokenization-table">
+            <thead>
+              <tr>
+                <th>EVENT NAME</th>
+                <th>PLATFORM</th>
+                <th>DATE</th>
+                <th>TIME (UTC)</th>
+                <th>EXPECTED ATTENDEES</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredEvents.length > 0 ? (
+                filteredEvents.map((event, index) => (
+                  <tr key={event.id} className={index === 0 ? 'first-row' : ''}>
+                    <td>
+                      <div className="company-cell-figma">
+                        <div className="company-avatar-figma" style={{ backgroundColor: platformColorMap[event.platform] || '#395698' }}>
+                          <span className="avatar-initial-figma">{event.name.charAt(0)}</span>
+                        </div>
+                        <span className="company-name-figma">{event.name}</span>
+                      </div>
+                    </td>
+                    <td className="total-supply-figma">{event.platform}</td>
+                    <td className="total-supply-figma">{event.date}</td>
+                    <td className="total-supply-figma">{event.time}</td>
+                    <td className="price-figma">{event.attendees}</td>
+                    <td>
+                      <span className={`status-badge-figma status-${event.status.toLowerCase()}-figma`}>
+                        {event.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="no-results">No events found matching your criteria</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="table-footer-figma">
+          <div className="pagination-info-figma">
+            <span className="pagination-showing-text">Showing</span>
+            <span className="pagination-current-box">{String(currentPage * resultsPerPage).padStart(2, '0')}</span>
+            <span className="pagination-showing-text">/ {totalResults} Results</span>
+          </div>
+          <div className="pagination-controls-figma">
+            <button
+              className="pagination-arrow-btn-figma pagination-prev"
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+            >
+              <svg width="32" height="34" viewBox="0 0 32 34" fill="none">
+                <path d="M17 21L13 17L17 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {getPageNumbers().map((page, index) => (
+              <button
+                key={index}
+                className={`pagination-page-btn-figma ${page === currentPage ? 'active' : ''} ${page === '...' ? 'ellipsis' : ''}`}
+                onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                disabled={page === '...'}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              className="pagination-arrow-btn-figma pagination-next"
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+            >
+              <svg width="32" height="34" viewBox="0 0 32 34" fill="none">
+                <path d="M14 21L18 17L14 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div className="table-disclaimer">
+          Market data is updated in real-time. Prices are for reference only and may vary across exchanges.
         </div>
       </div>
     </div>

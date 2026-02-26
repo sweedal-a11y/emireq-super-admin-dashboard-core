@@ -89,6 +89,8 @@ const TwoFactorAuth = () => {
     setVerifying(true);
     await new Promise((r) => setTimeout(r, 1000));
     setVerifying(false);
+    // Set auth token to mark user as logged in
+    localStorage.setItem("authToken", "true");
     setShowSuccess(true);
   };
 

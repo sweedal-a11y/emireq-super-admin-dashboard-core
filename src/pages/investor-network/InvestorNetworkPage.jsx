@@ -1,410 +1,408 @@
-import React, { useState } from 'react';
-import './InvestorNetworkPage.css';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import Header from '../../components/header/Header';
+import './InvestorNetworkPage.css';
 
-const InvestorNetworkPage = ({ isDarkMode, toggleTheme, sidebarCollapsed }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
-  const [currentPage, setCurrentPage] = useState(2);
-  const itemsPerPage = 4;
-  const totalResults = 120;
-  const totalPages = Math.ceil(totalResults / itemsPerPage);
+// ── Stat Card ────────────────────────────────────────────────────────────────
+const StatCard = ({ icon, bgColor, label, value, sub, subColor }) => (
+  <div className="in-stat-card">
+    <div className="in-stat-card__body">
+      <div className="in-stat-card__text">
+        <div className="in-stat-card__label">{label}</div>
+        <div className="in-stat-card__value">{value}</div>
+        <div className="in-stat-card__sub" style={{ color: subColor || '#6b7280' }}>{sub}</div>
+      </div>
+      <div className="in-stat-card__icon" style={{ background: bgColor }}>{icon}</div>
+    </div>
+  </div>
+);
 
-  // Stats data
-  const stats = [
-    {
-      title: 'Total Investors',
-      value: '50',
-      change: '+8%',
-      period: 'this quarter',
-      trend: 'up',
-      iconType: 'investors',
-      iconColor: '#3B82F6'
-    },
-    {
-      title: 'Active Investors',
-      value: '42',
-      change: '-3%',
-      period: 'this month',
-      trend: 'down',
-      iconType: 'active',
-      iconColor: '#10B981'
-    },
-    {
-      title: 'Total Capital',
-      value: '$45M',
-      change: '+85.2M',
-      period: 'in last quarter',
-      trend: 'up',
-      iconType: 'capital',
-      iconColor: '#F59E0B'
-    },
-    {
-      title: 'Zakat Pending',
-      value: '$450K',
-      change: '-50%',
-      period: 'vs last quarter',
-      trend: 'down',
-      iconType: 'zakat',
-      iconColor: '#8B5CF6'
-    }
-  ];
+// ── Donut Chart ──────────────────────────────────────────────────────────────
+const DonutChart = ({ data }) => {
+  const total = data.reduce((s, d) => s + d.value, 0);
+  let offset = 0;
+  const R = 80, cx = 100, cy = 100, strokeW = 30;
+  const circumference = 2 * Math.PI * R;
 
-  // Investor type distribution data
-  const investorTypes = [
-    { name: 'Angel', value: 18, color: '#3B82F6' },
-    { name: 'VC Fund', value: 12, color: '#06B6D4' },
-    { name: 'Institutional', value: 8, color: '#10B981' },
-    { name: 'Family Office', value: 7, color: '#F59E0B' },
-    { name: 'Sovereign Wealth', value: 5, color: '#EC4899' }
-  ];
-
-  const totalInvestors = investorTypes.reduce((sum, type) => sum + type.value, 0);
-
-  // Investment activity data (Last 6 months)
-  const activityData = [
-    { month: 'Jan', value: 14 },
-    { month: 'Feb', value: 18 },
-    { month: 'Mar', value: 21 },
-    { month: 'Apr', value: 19 },
-    { month: 'May', value: 22 },
-    { month: 'Jun', value: 23 },
-    { month: 'Jul', value: 21 }
-  ];
-
-  const maxValue = Math.max(...activityData.map(d => d.value));
-  const minValue = Math.min(...activityData.map(d => d.value));
-
-  // Investor directory data
-  const allInvestors = [
-    { id: 1, name: 'Mohammad Al-Farooq', type: 'Angel', portfolio: '5 Startups', invested: '1,250', available: '750', status: 'Active' },
-    { id: 2, name: 'Sarah Johnson', type: 'VC Fund', portfolio: '12 Startups', invested: '8,500', available: '16,500', status: 'Active' },
-    { id: 3, name: 'Ahmed Khan', type: 'Institutional', portfolio: '3 Startups', invested: '600', available: '400', status: 'Reviewing' },
-    { id: 4, name: 'Emma Wilson', type: 'Angel', portfolio: '7 Startups', invested: '2,100', available: '1,900', status: 'Active' },
-    { id: 5, name: 'Li Wei', type: 'VC Fund', portfolio: '15 Startups', invested: '12,000', available: '8,000', status: 'Active' },
-    { id: 6, name: 'Hassan Al-Rashid', type: 'Family Office', portfolio: '4 Startups', invested: '5,500', available: '4,500', status: 'Inactive' },
-    { id: 7, name: 'Maria Garcia', type: 'Institutional', portfolio: '9 Startups', invested: '7,800', available: '2,200', status: 'Active' },
-    { id: 8, name: 'James Chen', type: 'Angel', portfolio: '6 Startups', invested: '1,800', available: '2,200', status: 'Reviewing' }
-  ];
-
-  const filteredInvestors = allInvestors.filter(investor => {
-    const matchesSearch = investor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          investor.type.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'All' || investor.status === statusFilter;
-    return matchesSearch && matchesStatus;
+  const slices = data.map((d) => {
+    const dash = (d.value / total) * circumference;
+    const gap = circumference - dash;
+    const rotation = (offset / total) * 360 - 90;
+    offset += d.value;
+    return { ...d, dash, gap, rotation };
   });
 
-  const calculateDonutSegments = () => {
-    let currentAngle = -90; // Start from top
-    return investorTypes.map(type => {
-      const percentage = (type.value / totalInvestors) * 100;
-      const angle = (percentage / 100) * 360;
-      const startAngle = currentAngle;
-      const endAngle = currentAngle + angle;
-      
-      const x1 = 110 + 90 * Math.cos((Math.PI * startAngle) / 180);
-      const y1 = 110 + 90 * Math.sin((Math.PI * startAngle) / 180);
-      const x2 = 110 + 90 * Math.cos((Math.PI * endAngle) / 180);
-      const y2 = 110 + 90 * Math.sin((Math.PI * endAngle) / 180);
-      
-      const largeArc = angle > 180 ? 1 : 0;
-      const pathData = [
-        `M 110 110`,
-        `L ${x1} ${y1}`,
-        `A 90 90 0 ${largeArc} 1 ${x2} ${y2}`,
-        'Z'
-      ].join(' ');
-      
-      currentAngle = endAngle;
-      return { ...type, pathData, percentage };
-    });
-  };
+  return (
+    <svg width="200" height="200" viewBox="0 0 200 200">
+      {slices.map((s, i) => (
+        <circle
+          key={i}
+          cx={cx} cy={cy} r={R}
+          fill="none"
+          stroke={s.color}
+          strokeWidth={strokeW}
+          strokeDasharray={`${s.dash} ${s.gap}`}
+          strokeDashoffset={0}
+          transform={`rotate(${s.rotation} ${cx} ${cy})`}
+          className="in-donut-slice"
+        />
+      ))}
+      {/* White center */}
+      <circle cx={cx} cy={cy} r={R - strokeW / 2 - 2} fill="white" className="in-donut-center" />
+    </svg>
+  );
+};
 
-  const donutSegments = calculateDonutSegments();
+// ── Area / Line Chart ────────────────────────────────────────────────────────
+const AreaChart = ({ data, targetLine }) => {
+  const [tooltip, setTooltip] = useState(null);
+  const svgRef = useRef(null);
 
-  const renderStatIcon = (type) => {
-    const icons = {
-      investors: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M17 20C17 18.3431 14.7614 17 12 17C9.23858 17 7 18.3431 7 20M21 17.0004C21 15.7702 19.7659 14.7129 18 14.25M3 17.0004C3 15.7702 4.2341 14.7129 6 14.25M18 10.2361C18.6137 9.68679 19 8.8885 19 8C19 6.34315 17.6569 5 16 5C15.2316 5 14.5308 5.28885 14 5.76389M6 10.2361C5.38625 9.68679 5 8.8885 5 8C5 6.34315 6.34315 5 8 5C8.76835 5 9.46924 5.28885 10 5.76389M12 14C10.3431 14 9 12.6569 9 11C9 9.34315 10.3431 8 12 8C13.6569 8 15 9.34315 15 11C15 12.6569 13.6569 14 12 14Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
-      active: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M16 7L12 3L8 7M8 17L12 21L16 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 3V21" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-        </svg>
-      ),
-      capital: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2V22M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
-      zakat: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M9 3V5M15 3V5M9 19V21M15 19V21M5 9H3M5 15H3M21 9H19M21 15H19M7 19H17C18.1046 19 19 18.1046 19 17V7C19 5.89543 18.1046 5 17 5H7C5.89543 5 5 5.89543 5 7V17C5 18.1046 5.89543 19 7 19Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      )
-    };
-    return icons[type] || null;
-  };
+  const W = 500, H = 200, padL = 40, padR = 20, padT = 20, padB = 40;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
 
-  const getPageNumbers = () => {
-    const pages = [];
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i);
-    } else {
-      if (currentPage <= 3) {
-        pages.push(1, 2, 3, '...', totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
-      } else {
-        pages.push(1, '...', currentPage, '...', totalPages);
-      }
-    }
-    return pages;
-  };
+  const maxVal = Math.max(...data.map(d => d.value), targetLine) + 4;
+  const minVal = 0;
+
+  const xScale = (i) => padL + (i / (data.length - 1)) * chartW;
+  const yScale = (v) => padT + chartH - ((v - minVal) / (maxVal - minVal)) * chartH;
+
+  const linePath = data.map((d, i) => `${i === 0 ? 'M' : 'L'}${xScale(i)},${yScale(d.value)}`).join(' ');
+  const areaPath = linePath + ` L${xScale(data.length - 1)},${padT + chartH} L${padL},${padT + chartH} Z`;
+
+  const yTicks = [0, 7, 14, 21, 28];
+  const targetY = yScale(targetLine);
 
   return (
-    <div className="investor-network-page">
-      <Header 
-        isDarkMode={isDarkMode} 
-        toggleTheme={toggleTheme}
-        sidebarCollapsed={sidebarCollapsed}
-      />
-      
-      <div className="investor-network-content">
-        <div className="investor-network-header">
-          <div>
-            <h1>Investor Network</h1>
-            <p className="subtitle">Manage and monitor investor activities and portfolios</p>
-          </div>
+    <div className="in-area-chart-wrap">
+      <svg
+        ref={svgRef}
+        width="100%" viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="xMidYMid meet"
+        onMouseLeave={() => setTooltip(null)}
+      >
+        {/* Y grid lines */}
+        {yTicks.map(t => (
+          <g key={t}>
+            <line x1={padL} y1={yScale(t)} x2={W - padR} y2={yScale(t)} stroke="#e5e7eb" strokeWidth="1" strokeDasharray="4 4" />
+            <text x={padL - 8} y={yScale(t) + 4} fontSize="10" fill="#9ca3af" textAnchor="end">{t}</text>
+          </g>
+        ))}
+
+        {/* Target dashed line */}
+        <line x1={padL} y1={targetY} x2={W - padR} y2={targetY} stroke="#d1d5db" strokeWidth="1.5" strokeDasharray="6 4" />
+
+        {/* Area fill */}
+        <defs>
+          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+        <path d={areaPath} fill="url(#areaGrad)" />
+        <path d={linePath} fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />
+
+        {/* X axis labels */}
+        {data.map((d, i) => (
+          <text key={i} x={xScale(i)} y={H - 8} fontSize="11" fill="#9ca3af" textAnchor="middle">{d.label}</text>
+        ))}
+
+        {/* Hover areas */}
+        {data.map((d, i) => (
+          <rect
+            key={i}
+            x={xScale(i) - chartW / (data.length - 1) / 2}
+            y={padT}
+            width={chartW / (data.length - 1)}
+            height={chartH}
+            fill="transparent"
+            style={{ cursor: 'crosshair' }}
+            onMouseEnter={(e) => setTooltip({ index: i, data: d, x: xScale(i), y: yScale(d.value) })}
+          />
+        ))}
+
+        {/* Tooltip */}
+        {tooltip && (
+          <>
+            <line x1={tooltip.x} y1={padT} x2={tooltip.x} y2={padT + chartH} stroke="#374151" strokeWidth="1" strokeDasharray="4 3" />
+            <circle cx={tooltip.x} cy={tooltip.y} r="5" fill="#f59e0b" stroke="#fff" strokeWidth="2" />
+            <rect x={tooltip.x - 70} y={tooltip.y - 42} width="120" height="36" rx="6" fill="#111827" />
+            <text x={tooltip.x - 10} y={tooltip.y - 26} fontSize="11" fill="#fff" fontWeight="700" textAnchor="middle">{tooltip.data.label.toUpperCase()}</text>
+            <text x={tooltip.x - 10} y={tooltip.y - 13} fontSize="10" fill="#d1d5db" textAnchor="middle">Investments – {tooltip.data.value}</text>
+          </>
+        )}
+      </svg>
+    </div>
+  );
+};
+
+// ── Type Badge ───────────────────────────────────────────────────────────────
+const TypeBadge = ({ type }) => (
+  <span className="in-type-badge">{type}</span>
+);
+
+const StatusBadge = ({ status }) => {
+  const map = {
+    Active:    { bg: '#d1fae5', color: '#065f46' },
+    Reviewing: { bg: '#dbeafe', color: '#1e40af' },
+    Inactive:  { bg: '#f3f4f6', color: '#374151' },
+  };
+  const s = map[status] || map.Inactive;
+  return <span className="in-status-badge" style={{ background: s.bg, color: s.color }}>{status}</span>;
+};
+
+// ── Main Page ────────────────────────────────────────────────────────────────
+const InvestorNetworkPage = ({ isDarkMode, toggleTheme, sidebarCollapsed }) => {
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showPerPage, setShowPerPage] = useState(4);
+  const [sortConfig, setSortConfig] = useState({ key: null, dir: 'asc' });
+
+  const donutData = [
+    { label: 'Angel',          value: 18, color: '#6366f1' },
+    { label: 'VC Fund',        value: 12, color: '#06b6d4' },
+    { label: 'Institutional',  value: 8,  color: '#22c55e' },
+    { label: 'Family Office',  value: 7,  color: '#f97316' },
+    { label: 'Sovereign Wealth', value: 5, color: '#ec4899' },
+  ];
+
+  const activityData = [
+    { label: 'Jan', value: 15 },
+    { label: 'Feb', value: 17 },
+    { label: 'Mar', value: 14 },
+    { label: 'Apr', value: 16 },
+    { label: 'May', value: 20 },
+    { label: 'Jun', value: 22 },
+    { label: 'Jul', value: 20 },
+  ];
+
+  const allInvestors = [
+    { id: 1, name: 'Mohammed Al-Farooq', type: 'Angel',       portfolio: '5 Startups',  invested: 1250,  available: 750,   status: 'Active' },
+    { id: 2, name: 'Sarah Johnson',      type: 'VC Fund',     portfolio: '12 Startups', invested: 8500,  available: 15500, status: 'Active' },
+    { id: 3, name: 'Ahmed Khan',         type: 'Institutional', portfolio: '3 Startups', invested: 600,  available: 400,   status: 'Reviewing' },
+    { id: 4, name: 'Fatima Hassan',      type: 'Family Office', portfolio: '7 Startups', invested: 3200, available: 2100,  status: 'Active' },
+    { id: 5, name: 'Omar Abdullah',      type: 'Sovereign Wealth', portfolio: '2 Startups', invested: 12000, available: 8000, status: 'Active' },
+    { id: 6, name: 'Layla Ibrahim',      type: 'Angel',       portfolio: '4 Startups',  invested: 900,   available: 600,   status: 'Reviewing' },
+    { id: 7, name: 'Yusuf Al-Rashid',    type: 'VC Fund',     portfolio: '9 Startups',  invested: 5500,  available: 9000,  status: 'Active' },
+    { id: 8, name: 'Nour Khalid',        type: 'Institutional', portfolio: '1 Startup',  invested: 200,   available: 300,   status: 'Inactive' },
+  ];
+
+  const handleSort = (key) => {
+    setSortConfig(prev => ({ key, dir: prev.key === key && prev.dir === 'asc' ? 'desc' : 'asc' }));
+  };
+
+  const filtered = useMemo(() => {
+    let rows = allInvestors;
+    if (statusFilter !== 'All') rows = rows.filter(r => r.status === statusFilter);
+    if (searchQuery) rows = rows.filter(r => r.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (sortConfig.key) {
+      rows = [...rows].sort((a, b) => {
+        const va = a[sortConfig.key], vb = b[sortConfig.key];
+        if (va < vb) return sortConfig.dir === 'asc' ? -1 : 1;
+        if (va > vb) return sortConfig.dir === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    return rows;
+  }, [statusFilter, searchQuery, sortConfig]);
+
+  const totalPages = Math.ceil(filtered.length / showPerPage);
+  const paginated = filtered.slice((currentPage - 1) * showPerPage, currentPage * showPerPage);
+
+  const SortIcon = ({ col }) => (
+    <span className={`in-sort-icon ${sortConfig.key === col ? 'active' : ''}`}>
+      {sortConfig.key === col ? (sortConfig.dir === 'asc' ? '↑' : '↓') : '⇅'}
+    </span>
+  );
+
+  const statuses = ['All', 'Active', 'Reviewing', 'Inactive'];
+
+  return (
+    <div className={`em-startup-overview in-page ${sidebarCollapsed ? 'em-startup-overview--sidebar-collapsed' : ''}`}>
+      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />
+
+      <div className="in-content">
+        {/* Page Header */}
+        <div className="in-page-header">
+          <h1 className="in-page-title">Investor Network</h1>
+          <p className="in-page-subtitle">Manage and monitor investor activities and portfolios</p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="stats-grid">
-          {stats.map((stat, index) => (
-            <div key={index} className="stat-card">
-              <div className="stat-icon" style={{ backgroundColor: stat.iconColor }}>
-                {renderStatIcon(stat.iconType)}
-              </div>
-              <div className="stat-details">
-                <div className="stat-label">{stat.title}</div>
-                <div className="stat-value">{stat.value}</div>
-                <div className={`stat-change ${stat.trend}`}>
-                  <span className="change-arrow">{stat.trend === 'up' ? '↑' : '↓'}</span>
-                  <span className="change-value">{stat.change}</span>
-                  <span className="change-period">{stat.period}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+        {/* Stat Cards */}
+        <div className="in-stats-grid">
+          <StatCard
+            bgColor="#dbeafe"
+            icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
+            label="Total Investors"
+            value="50"
+            sub="↑ +8% this quarter"
+            subColor="#22c55e"
+          />
+          <StatCard
+            bgColor="#d1fae5"
+            icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>}
+            label="Active Investors"
+            value="42"
+            sub="↑ +5% this month"
+            subColor="#22c55e"
+          />
+          <StatCard
+            bgColor="#fef3c7"
+            icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>}
+            label="Total Capital"
+            value="$45M"
+            sub="↑ +$8.2M vs last quarter"
+            subColor="#22c55e"
+          />
+          <StatCard
+            bgColor="#ede9fe"
+            icon={<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>}
+            label="Zakat Pending"
+            value="$450K"
+            sub="↓ -$50K vs last quarter"
+            subColor="#ef4444"
+          />
         </div>
 
         {/* Charts Row */}
-        <div className="charts-row">
-          {/* Investor Type Distribution */}
-          <div className="chart-card">
-            <div className="chart-header">
-              <h3>Investor Type Distribution</h3>
-              <div className="chart-actions">
-                <button className="icon-btn">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M2 2L14 14M2 14L14 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
+        <div className="in-charts-row">
+          {/* Donut */}
+          <div className="in-card in-chart-card">
+            <div className="in-card-header-row">
+              <div>
+                <h2 className="in-card-title">
+                  Investor Type Distribution
+                  <span className="in-info-icon" title="Breakdown by investor category">ℹ</span>
+                </h2>
+                <p className="in-card-sub">Breakdown by investor category</p>
+              </div>
+              <div className="in-card-actions">
+                <button className="in-card-action-btn" title="Expand">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
                 </button>
-                <button className="icon-btn">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 4V8M8 12H8.01M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
+                <button className="in-card-action-btn" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 </button>
-                <button className="icon-btn">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <circle cx="8" cy="4" r="1" fill="currentColor"/>
-                    <circle cx="8" cy="8" r="1" fill="currentColor"/>
-                    <circle cx="8" cy="12" r="1" fill="currentColor"/>
-                  </svg>
+                <button className="in-card-action-btn" title="More">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
                 </button>
               </div>
             </div>
-            <div className="chart-subtitle">Breakdown by investor category</div>
-            <div className="donut-chart-container">
-              <svg className="donut-chart" viewBox="0 0 220 220">
-                {donutSegments.map((segment, index) => (
-                  <path
-                    key={index}
-                    d={segment.pathData}
-                    fill={segment.color}
-                    className="donut-segment"
-                  />
-                ))}
-                <circle cx="110" cy="110" r="60" fill="var(--card-bg)" />
-              </svg>
-              <div className="donut-legend">
-                {investorTypes.map((type, index) => (
-                  <div key={index} className="legend-item">
-                    <div className="legend-color" style={{ backgroundColor: type.color }}></div>
-                    <div className="legend-label">{type.name}</div>
-                    <div className="legend-value">{type.value}</div>
+
+            <div className="in-donut-wrap">
+              <DonutChart data={donutData} />
+            </div>
+
+            <div className="in-donut-legend">
+              {donutData.map(d => (
+                <div key={d.label} className="in-donut-legend-row">
+                  <div className="in-donut-legend-left">
+                    <span className="in-legend-dot" style={{ background: d.color }} />
+                    <span className="in-legend-label">{d.label}</span>
                   </div>
-                ))}
-              </div>
+                  <span className="in-legend-count">{d.value}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Investment Activity */}
-          <div className="chart-card">
-            <div className="chart-header">
-              <h3>Investment Activity (Last 6 Months)</h3>
-              <div className="chart-actions">
-                <button className="icon-btn">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M2 2L14 14M2 14L14 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
+          {/* Area Chart */}
+          <div className="in-card in-chart-card">
+            <div className="in-card-header-row">
+              <div>
+                <h2 className="in-card-title">
+                  Investment Activity (Last 6 Months)
+                  <span className="in-info-icon" title="Monthly investment trend with targets">ℹ</span>
+                </h2>
+                <p className="in-card-sub">Monthly investment trend with targets</p>
+              </div>
+              <div className="in-card-actions">
+                <button className="in-card-action-btn" title="Expand">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
                 </button>
-                <button className="icon-btn">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M13 7L8 2L3 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                <button className="in-card-action-btn" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 </button>
-                <button className="icon-btn">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <circle cx="8" cy="4" r="1" fill="currentColor"/>
-                    <circle cx="8" cy="8" r="1" fill="currentColor"/>
-                    <circle cx="8" cy="12" r="1" fill="currentColor"/>
-                  </svg>
+                <button className="in-card-action-btn" title="More">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
                 </button>
               </div>
             </div>
-            <div className="chart-subtitle">Monthly investment trend with targets</div>
-            <div className="line-chart-container">
-              <svg className="line-chart" viewBox="0 0 600 300" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#FCD34D" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#FCD34D" stopOpacity="0.05" />
-                  </linearGradient>
-                </defs>
-                {/* Grid lines */}
-                <line x1="0" y1="75" x2="600" y2="75" stroke="var(--border-color)" strokeWidth="1" opacity="0.3" />
-                <line x1="0" y1="150" x2="600" y2="150" stroke="var(--border-color)" strokeWidth="1" opacity="0.3" />
-                <line x1="0" y1="225" x2="600" y2="225" stroke="var(--border-color)" strokeWidth="1" opacity="0.3" />
-                {/* Area under curve */}
-                <path
-                  d={`M 0 ${300 - ((activityData[0].value - minValue) / (maxValue - minValue)) * 250} 
-                     ${activityData.map((d, i) => 
-                       `L ${(i * 100)} ${300 - ((d.value - minValue) / (maxValue - minValue)) * 250}`
-                     ).join(' ')}
-                     L ${(activityData.length - 1) * 100} 300 L 0 300 Z`}
-                  fill="url(#areaGradient)"
-                />
-                {/* Line */}
-                <polyline
-                  points={activityData.map((d, i) => 
-                    `${i * 100},${300 - ((d.value - minValue) / (maxValue - minValue)) * 250}`
-                  ).join(' ')}
-                  fill="none"
-                  stroke="#FCD34D"
-                  strokeWidth="3"
-                />
-                {/* Data points */}
-                {activityData.map((d, i) => (
-                  <circle
-                    key={i}
-                    cx={i * 100}
-                    cy={300 - ((d.value - minValue) / (maxValue - minValue)) * 250}
-                    r="4"
-                    fill="#FCD34D"
-                    className="data-point"
-                  />
-                ))}
-              </svg>
-              <div className="chart-x-labels">
-                {activityData.map((d, i) => (
-                  <span key={i}>{d.month}</span>
-                ))}
-              </div>
-              <div className="chart-tooltip">
-                <div className="tooltip-content">
-                  <div className="tooltip-label">4 JUN</div>
-                  <div className="tooltip-value">Investments: 23</div>
-                </div>
-              </div>
-            </div>
+            <AreaChart data={activityData} targetLine={14} />
           </div>
         </div>
 
-        {/* Investor Directory */}
-        <div className="directory-section">
-          <div className="directory-header">
+        {/* Investor Directory Table */}
+        <div className="in-card in-table-card">
+          <div className="in-card-header-row">
             <div>
-              <h2>Investor Directory</h2>
-              <p className="directory-subtitle">Complete list of all investors in your network</p>
+              <h2 className="in-card-title">
+                Investor Directory
+                <span className="in-info-icon" title="Complete list of all investors in your network">ℹ</span>
+              </h2>
+              <p className="in-card-sub">Complete list of all investors in your network</p>
             </div>
           </div>
 
-          <div className="table-controls">
-            <div className="filter-group">
-              <select 
-                className="status-filter"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="All">Status</option>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-                <option value="Reviewing">Reviewing</option>
-              </select>
+          {/* Filters */}
+          <div className="in-table-filters">
+            <div className="in-filter-group">
+              {statuses.map(s => (
+                <button
+                  key={s}
+                  className={`in-filter-btn ${statusFilter === s ? 'in-filter-btn--active' : ''}`}
+                  onClick={() => { setStatusFilter(s); setCurrentPage(1); }}
+                >
+                  {s}
+                </button>
+              ))}
             </div>
-            <div className="search-box">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13Z" stroke="currentColor" strokeWidth="2"/>
-                <path d="M11.5 11.5L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
+            <div className="in-search-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input
-                type="text"
+                className="in-search"
                 placeholder="Search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchQuery}
+                onChange={e => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               />
             </div>
           </div>
 
-          <div className="data-table">
-            <table>
+          {/* Table */}
+          <div className="in-table-wrap">
+            <table className="in-table">
               <thead>
                 <tr>
-                  <th>NAME</th>
-                  <th>TYPE</th>
-                  <th>PORTFOLIO</th>
-                  <th>INVESTED USD</th>
-                  <th>AVAILABLE USD</th>
-                  <th>STATUS</th>
-                  <th>ACTIONS</th>
+                  {[
+                    { key: 'name',      label: 'NAME' },
+                    { key: 'type',      label: 'TYPE' },
+                    { key: 'portfolio', label: 'PORTFOLIO' },
+                    { key: 'invested',  label: 'INVESTED ($K)' },
+                    { key: 'available', label: 'AVAILABLE ($K)' },
+                    { key: 'status',    label: 'STATUS' },
+                  ].map(col => (
+                    <th key={col.key} className="in-th" onClick={() => handleSort(col.key)}>
+                      {col.label} <SortIcon col={col.key} />
+                    </th>
+                  ))}
+                  <th className="in-th">ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredInvestors.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((investor) => (
-                  <tr key={investor.id}>
-                    <td>{investor.name}</td>
-                    <td>
-                      <span className="type-badge">{investor.type}</span>
-                    </td>
-                    <td>{investor.portfolio}</td>
-                    <td>{investor.invested}</td>
-                    <td>{investor.available}</td>
-                    <td>
-                      <span className={`status-badge status-${investor.status.toLowerCase()}`}>
-                        {investor.status}
-                      </span>
-                    </td>
-                    <td>
-                      <button className="action-btn">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                          <circle cx="8" cy="4" r="1" fill="white"/>
-                          <circle cx="8" cy="8" r="1" fill="white"/>
-                          <circle cx="8" cy="12" r="1" fill="white"/>
-                        </svg>
+                {paginated.length === 0 ? (
+                  <tr><td colSpan={7} className="in-empty">No investors found</td></tr>
+                ) : paginated.map(row => (
+                  <tr key={row.id} className="in-tr">
+                    <td className="in-td in-td--name">{row.name}</td>
+                    <td className="in-td"><TypeBadge type={row.type} /></td>
+                    <td className="in-td">{row.portfolio}</td>
+                    <td className="in-td in-td--num">{row.invested.toLocaleString()}</td>
+                    <td className="in-td in-td--num">{row.available.toLocaleString()}</td>
+                    <td className="in-td"><StatusBadge status={row.status} /></td>
+                    <td className="in-td">
+                      <button className="in-view-btn" title="View investor">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                       </button>
                     </td>
                   </tr>
@@ -413,48 +411,35 @@ const InvestorNetworkPage = ({ isDarkMode, toggleTheme, sidebarCollapsed }) => {
             </table>
           </div>
 
-          <div className="table-footer">
-            <div className="results-info">
-              Showing <strong>{String((currentPage - 1) * itemsPerPage + 1).padStart(2, '0')}</strong> / {totalResults} Results
-            </div>
-            <div className="pagination">
-              <button 
-                className="page-btn"
-                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                disabled={currentPage === 1}
+          {/* Pagination */}
+          <div className="in-pagination">
+            <div className="in-pagination__info">
+              Showing{' '}
+              <select
+                className="in-perpage-select"
+                value={showPerPage}
+                onChange={e => { setShowPerPage(Number(e.target.value)); setCurrentPage(1); }}
               >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              {getPageNumbers().map((page, index) => (
-                page === '...' ? (
-                  <span key={`ellipsis-${index}`} className="page-ellipsis">...</span>
-                ) : (
-                  <button
-                    key={page}
-                    className={`page-number ${currentPage === page ? 'active' : ''}`}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </button>
-                )
+                {[4, 8, 16].map(n => <option key={n} value={n}>{String(n).padStart(2, '0')}</option>)}
+              </select>
+              {' '}/ {filtered.length} Results
+            </div>
+            <div className="in-pagination__pages">
+              <button className="in-page-btn" onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>‹</button>
+              {Array.from({ length: Math.min(totalPages, 4) }, (_, i) => i + 1).map(p => (
+                <button key={p} className={`in-page-btn ${currentPage === p ? 'in-page-btn--active' : ''}`} onClick={() => setCurrentPage(p)}>{p}</button>
               ))}
-              <button 
-                className="page-btn"
-                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                disabled={currentPage === totalPages}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
+              {totalPages > 4 && <span className="in-page-ellipsis">...</span>}
+              {totalPages > 4 && (
+                <button className={`in-page-btn ${currentPage === totalPages ? 'in-page-btn--active' : ''}`} onClick={() => setCurrentPage(totalPages)}>{totalPages}</button>
+              )}
+              <button className="in-page-btn" onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>›</button>
             </div>
           </div>
+        </div>
 
-          <div className="data-notice">
-            Investor data is updated in real-time. Figures are for reference only and may vary across exchanges.
-          </div>
+        <div className="in-footer-note">
+          Market data is updated in real-time. Prices are for reference only and may vary across exchanges.
         </div>
       </div>
     </div>

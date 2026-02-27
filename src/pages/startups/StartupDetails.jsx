@@ -16,7 +16,7 @@ export default function StartupDetails({ isDarkMode, toggleTheme, sidebarCollaps
   };
 
   return (
-    <div className="em-startup-details-container">
+     <div className={`em-startup-overview in-page${sidebarCollapsed ? ' em-startup-overview--sidebar-collapsed' : ''}${isDarkMode ? ' dark' : ''}`}>
       <Header 
         isDarkMode={isDarkMode} 
         toggleTheme={toggleTheme} 

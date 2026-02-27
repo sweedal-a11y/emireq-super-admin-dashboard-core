@@ -34,14 +34,12 @@ function AppContent() {
   const logoutButtonRef = useRef(null);
   const isInitialMount = useRef(true);
 
-  // Redirect to login if not authenticated and not on auth route
+  // Always show login page first on initial mount
   useEffect(() => {
-    const isAuthPage = location.pathname.startsWith("/auth");
-    const isLoggedIn = !!localStorage.getItem("authToken");
-    if (!isLoggedIn && !isAuthPage) {
+    if (location.pathname !== "/auth/login") {
       navigate("/auth/login", { replace: true });
     }
-  }, [location.pathname, navigate]);
+  }, []);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);

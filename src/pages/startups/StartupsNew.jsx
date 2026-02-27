@@ -72,7 +72,7 @@ export default function Startups({ isDarkMode, toggleTheme, sidebarCollapsed }) 
   const rejectedCount = startupsData.filter(s => s.status === "Rejected").length;
 
   return (
-    <div className="em-startups-container">
+    <div className={`em-startup-overview in-page${sidebarCollapsed ? ' em-startup-overview--sidebar-collapsed' : ''}${isDarkMode ? ' dark' : ''}`}>
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />
       
       <main className="em-startups-main">

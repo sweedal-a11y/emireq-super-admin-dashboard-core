@@ -68,7 +68,7 @@ export default function Compliance({ isDarkMode, toggleTheme, sidebarCollapsed }
   };
 
   return (
-    <div className={`em-compliance-container ${isDarkMode ? 'em-compliance-container--dark' : ''} ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+     <div className={`em-startup-overview in-page${sidebarCollapsed ? ' em-startup-overview--sidebar-collapsed' : ''}${isDarkMode ? ' dark' : ''}`}>
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />
       
       <main className={`em-compliance-main ${sidebarCollapsed ? 'em-compliance-main--expanded' : ''}`}>

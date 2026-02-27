@@ -16,7 +16,7 @@ export default function InvestorDetails({ isDarkMode, toggleTheme, sidebarCollap
   };
 
   return (
-    <div className="em-investor-details-container">
+    <div className={`em-startup-overview in-page${sidebarCollapsed ? ' em-startup-overview--sidebar-collapsed' : ''}${isDarkMode ? ' dark' : ''}`}>
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />
 
       <main className="em-investor-details-main">

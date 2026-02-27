@@ -72,7 +72,7 @@ export default function Investors({ isDarkMode, toggleTheme, sidebarCollapsed })
   const rejectedCount = investorsData.filter(item => item.status === "Rejected").length;
 
   return (
-    <div className="em-investors-container">
+    <div className={`em-startup-overview in-page${sidebarCollapsed ? ' em-startup-overview--sidebar-collapsed' : ''}${isDarkMode ? ' dark' : ''}`}>
       <Header 
         isDarkMode={isDarkMode} 
         toggleTheme={toggleTheme}

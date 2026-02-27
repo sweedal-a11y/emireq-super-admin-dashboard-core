@@ -2439,7 +2439,7 @@
   gap: 12px;
   width: 100%;
   max-width: 503px;
-  margin: 0 auto;
+  margin: 48px auto 0 auto;
 }
 
 .compliance-legend-item {

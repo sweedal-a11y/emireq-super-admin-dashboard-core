@@ -1,370 +1,429 @@
-.settings-page {
+/* ══════════════════════════════════════════════════════════
+   SETTINGS PAGE  —  pixel-perfect Figma match + dark mode
+   ══════════════════════════════════════════════════════════ */
+
+/* ── CSS Variables ──────────────────────────────────────── */
+.sp-root {
+  --sp-bg:           #F3F4F6;
+  --sp-sidebar-bg:   #FFFFFF;
+  --sp-sidebar-border: #E5E7EB;
+  --sp-card-bg:      #FFFFFF;
+  --sp-card-border:  #E5E7EB;
+  --sp-card-shadow:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+
+  /* Text */
+  --sp-text-h:       #111827;
+  --sp-text-body:    #374151;
+  --sp-text-sub:     #6B7280;
+  --sp-text-muted:   #9CA3AF;
+
+  /* Form */
+  --sp-input-bg:     #FFFFFF;
+  --sp-input-border: #D1D5DB;
+  --sp-input-text:   #111827;
+  --sp-input-focus:  #3B82F6;
+
+  /* Nav */
+  --sp-nav-text:     #6B7280;
+  --sp-nav-hover-bg: #F3F4F6;
+  --sp-nav-hover-text: #111827;
+  --sp-nav-active-bg: #EFF6FF;
+  --sp-nav-active-text: #1D4ED8;
+  --sp-nav-active-icon: #2563EB;
+
+  /* Toggle */
+  --sp-toggle-off:   #D1D5DB;
+  --sp-toggle-on:    #111827;
+
+  /* Divider */
+  --sp-divider:      #F3F4F6;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #F9FAFB;
+  min-height: 100vh;
+  background: var(--sp-bg);
 }
 
-.settings-content {
+/* ── Dark mode overrides ──────────────────────────────── */
+.sp-root.dark {
+  --sp-bg:           #111827;
+  --sp-sidebar-bg:   #1F2937;
+  --sp-sidebar-border: #374151;
+  --sp-card-bg:      #1F2937;
+  --sp-card-border:  #374151;
+  --sp-card-shadow:  0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+
+  --sp-text-h:       #F9FAFB;
+  --sp-text-body:    #E5E7EB;
+  --sp-text-sub:     #9CA3AF;
+  --sp-text-muted:   #6B7280;
+
+  --sp-input-bg:     #374151;
+  --sp-input-border: #4B5563;
+  --sp-input-text:   #F9FAFB;
+  --sp-input-focus:  #60A5FA;
+
+  --sp-nav-text:     #9CA3AF;
+  --sp-nav-hover-bg: #374151;
+  --sp-nav-hover-text: #F9FAFB;
+  --sp-nav-active-bg: rgba(59,130,246,0.15);
+  --sp-nav-active-text: #93C5FD;
+  --sp-nav-active-icon: #60A5FA;
+
+  --sp-toggle-off:   #4B5563;
+  --sp-toggle-on:    #3B82F6;
+
+  --sp-divider:      #374151;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.sp-body {
+  display: flex;
   flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 60px); /* adjust if header height differs */
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+.sp-sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: var(--sp-sidebar-bg);
+  border-right: 1px solid var(--sp-sidebar-border);
+  padding: 20px 12px;
   overflow-y: auto;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
 }
 
-.settings-layout {
-  display: flex;
-  height: 100%;
-}
-
-/* Settings Sidebar */
-.settings-sidebar {
-  width: 280px;
-  background: white;
-  border-right: 1px solid #E5E7EB;
-  padding: 24px 16px;
+.sp-nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  flex-shrink: 0;
+  gap: 2px;
 }
 
-.settings-menu-item {
+.sp-nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 10px;
+  padding: 10px 12px;
   border-radius: 8px;
   border: none;
   background: transparent;
-  color: #6B7280;
-  font-size: 14px;
+  color: var(--sp-nav-text);
+  font-size: 13.5px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
   text-align: left;
   width: 100%;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
 }
-
-.settings-menu-item:hover {
-  background: #F3F4F6;
-  color: #1F2937;
+.sp-nav-item:hover {
+  background: var(--sp-nav-hover-bg);
+  color: var(--sp-nav-hover-text);
 }
-
-.settings-menu-item.active {
-  background: #FEF3C7;
-  color: #1F2937;
+.sp-nav-item--active {
+  background: var(--sp-nav-active-bg);
+  color: var(--sp-nav-active-text);
 }
-
-.menu-icon {
-  width: 16px;
-  height: 16px;
+.sp-nav-item--active .sp-nav-icon {
+  color: var(--sp-nav-active-icon);
+}
+.sp-nav-icon {
+  width: 17px;
+  height: 17px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
-
-.menu-label {
+.sp-nav-label {
   flex: 1;
+  white-space: nowrap;
 }
 
-/* Main Content */
-.settings-main {
+/* ── Main content ────────────────────────────────────────── */
+.sp-main {
   flex: 1;
-  padding: 32px 48px;
   overflow-y: auto;
-  max-width: 1200px;
+  padding: 32px 40px 48px;
+  background: var(--sp-bg);
+  transition: background 0.2s;
 }
 
-.settings-section-header {
-  margin-bottom: 32px;
+/* ── Page heading ────────────────────────────────────────── */
+.sp-page-head {
+  margin-bottom: 28px;
 }
-
-.settings-section-header h1 {
-  font-size: 28px;
-  font-weight: 600;
-  color: #1F2937;
-  margin: 0 0 8px 0;
+.sp-page-title {
+  font-size: 26px;
+  font-weight: 650;
+  color: var(--sp-text-h);
+  margin: 0 0 6px;
+  letter-spacing: -0.025em;
+  transition: color 0.2s;
 }
-
-.section-subtitle {
-  font-size: 14px;
-  color: #6B7280;
+.sp-page-sub {
+  font-size: 13.5px;
+  color: var(--sp-text-sub);
   margin: 0;
+  transition: color 0.2s;
 }
 
-/* Settings Sections */
-.settings-section {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/* ── Cards (sections) ────────────────────────────────────── */
+.sp-card {
+  background: var(--sp-card-bg);
+  border: 1px solid var(--sp-card-border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--sp-card-shadow);
+  transition: background 0.2s, border-color 0.2s;
 }
 
-.section-title {
-  font-size: 18px;
+.sp-card-title {
+  font-size: 16px;
   font-weight: 600;
-  color: #1F2937;
-  margin: 0 0 20px 0;
+  color: var(--sp-text-h);
+  margin: 0 0 22px;
+  letter-spacing: -0.01em;
+  transition: color 0.2s;
 }
 
-/* Form Elements */
-.form-grid {
+/* ── Form grid ───────────────────────────────────────────── */
+.sp-form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
 }
 
-.form-group {
+.sp-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
-.form-group label {
-  font-size: 13px;
+.sp-label {
+  font-size: 12.5px;
   font-weight: 500;
-  color: #374151;
+  color: var(--sp-text-body);
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
 }
 
-.form-input,
-.form-select {
-  padding: 10px 14px;
-  border: 1px solid #E5E7EB;
+/* Input */
+.sp-input {
+  height: 40px;
+  padding: 0 13px;
+  background: var(--sp-input-bg);
+  border: 1px solid var(--sp-input-border);
   border-radius: 8px;
-  font-size: 14px;
-  color: #1F2937;
-  background: white;
+  font-size: 13.5px;
+  color: var(--sp-input-text);
+  font-family: inherit;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s, background 0.2s, color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
+.sp-input:hover   { border-color: #9CA3AF; }
+.sp-input:focus   { border-color: var(--sp-input-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
 
-.form-input:focus,
-.form-select:focus {
-  border-color: #3B82F6;
+/* Select wrapper */
+.sp-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
-
-.form-select {
-  cursor: pointer;
+.sp-select {
+  height: 40px;
+  padding: 0 38px 0 13px;
+  background: var(--sp-input-bg);
+  border: 1px solid var(--sp-input-border);
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--sp-input-text);
+  font-family: inherit;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 40px;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.2s, color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.sp-select:hover  { border-color: #9CA3AF; }
+.sp-select:focus  { border-color: var(--sp-input-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+
+.sp-select-chevron {
+  position: absolute;
+  right: 11px;
+  color: var(--sp-text-sub);
+  pointer-events: none;
+  flex-shrink: 0;
+  transition: color 0.2s;
 }
 
-/* Toggle List */
-.toggle-list {
+/* ── Toggle list ─────────────────────────────────────────── */
+.sp-toggle-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
-.toggle-item {
+.sp-toggle-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  padding: 14px 0;
+}
+.sp-toggle-row--border {
+  border-bottom: 1px solid var(--sp-divider);
 }
 
-.toggle-info {
+.sp-toggle-info {
   flex: 1;
 }
-
-.toggle-title {
-  font-size: 15px;
+.sp-toggle-title {
+  font-size: 14px;
   font-weight: 500;
-  color: #1F2937;
-  margin: 0 0 4px 0;
+  color: var(--sp-text-h);
+  margin: 0 0 3px;
+  transition: color 0.2s;
 }
-
-.toggle-description {
-  font-size: 13px;
-  color: #6B7280;
+.sp-toggle-desc {
+  font-size: 12.5px;
+  color: var(--sp-text-sub);
   margin: 0;
+  transition: color 0.2s;
 }
 
-/* Toggle Switch */
-.toggle-switch {
+/* ── Toggle switch ───────────────────────────────────────── */
+.sp-toggle {
   position: relative;
-  width: 44px;
-  height: 24px;
-  background: #E5E7EB;
+  width: 48px;
+  height: 28px;
+  background: #D1D5DB;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
   flex-shrink: 0;
+  padding: 0;
+  transition: background 0.25s ease;
+  outline: none;
+}
+.sp-toggle:focus-visible {
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.35);
+}
+.sp-toggle--on {
+  background: #111827;
+}
+.sp-root.dark .sp-toggle--on {
+  background: #3B82F6;
+}
+.sp-root.dark .sp-toggle {
+  background: #4B5563;
 }
 
-.toggle-switch.active {
-  background: #1F2937;
-}
-
-.toggle-slider {
+.sp-toggle__knob {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
-  background: white;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: #ffffff;
   border-radius: 50%;
-  transition: transform 0.3s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.28);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
 }
-
-.toggle-switch.active .toggle-slider {
+.sp-toggle--on .sp-toggle__knob {
   transform: translateX(20px);
 }
 
-/* Save Button */
-.settings-actions {
+/* ── Save button ─────────────────────────────────────────── */
+.sp-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 32px;
+  margin-top: 8px;
+  padding-top: 4px;
 }
-
-.save-button {
-  padding: 12px 32px;
+.sp-save-btn {
+  height: 42px;
+  padding: 0 28px;
   background: #2563EB;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 9px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  box-shadow: 0 2px 6px rgba(37,99,235,0.35);
+}
+.sp-save-btn:hover  { background: #1D4ED8; box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
+.sp-save-btn:active { transform: scale(0.97); }
+
+/* ── Dark mode — select option bg ───────────────────────── */
+.sp-root.dark .sp-select option {
+  background: #374151;
+  color: #F9FAFB;
 }
 
-.save-button:hover {
-  background: #1D4ED8;
+/* ── Scrollbar styling ───────────────────────────────────── */
+.sp-main::-webkit-scrollbar,
+.sp-sidebar::-webkit-scrollbar { width: 5px; }
+.sp-main::-webkit-scrollbar-track,
+.sp-sidebar::-webkit-scrollbar-track { background: transparent; }
+.sp-main::-webkit-scrollbar-thumb,
+.sp-sidebar::-webkit-scrollbar-thumb {
+  background: var(--sp-input-border);
+  border-radius: 3px;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .settings-main {
-    padding: 24px 32px;
-  }
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .sp-main { padding: 24px 28px 40px; }
 }
 
-@media (max-width: 968px) {
-  .settings-layout {
-    flex-direction: column;
-  }
-
-  .settings-sidebar {
+@media (max-width: 768px) {
+  .sp-body { flex-direction: column; height: auto; }
+  .sp-sidebar {
     width: 100%;
+    min-width: unset;
     border-right: none;
-    border-bottom: 1px solid #E5E7EB;
+    border-bottom: 1px solid var(--sp-sidebar-border);
+    padding: 12px;
     flex-direction: row;
+    display: flex;
     overflow-x: auto;
-    padding: 16px;
   }
-
-  .settings-menu-item {
-    white-space: nowrap;
+  .sp-nav {
+    flex-direction: row;
+    gap: 4px;
   }
-
-  .settings-main {
-    padding: 24px 16px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
+  .sp-nav-item { white-space: nowrap; padding: 8px 12px; }
+  .sp-main { padding: 20px 16px 32px; }
+  .sp-form-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 640px) {
-  .settings-section-header h1 {
-    font-size: 24px;
-  }
-
-  .settings-section {
-    padding: 16px;
-  }
-
-  .toggle-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
+@media (max-width: 480px) {
+  .sp-page-title { font-size: 22px; }
+  .sp-card { padding: 18px 18px; }
+  .sp-save-btn { width: 100%; }
+  .sp-actions { justify-content: stretch; }
 }
 
-/* Dark Mode */
-[data-theme="dark"] .settings-page,
-@media (prefers-color-scheme: dark) {
-  .settings-page {
-    background-color: #111827;
-  }
-  
-  .settings-sidebar {
-    background: #1F2937;
-    border-right-color: #374151;
-  }
-  
-  .settings-menu-item {
-    color: #9CA3AF;
-  }
-  
-  .settings-menu-item:hover {
-    background: #374151;
-    color: #F9FAFB;
-  }
-  
-  .settings-menu-item.active {
-    background: #FEF3C7;
-    color: #1F2937;
-  }
-  
-  .settings-section-header h1 {
-    color: #F9FAFB;
-  }
-  
-  .section-subtitle {
-    color: #9CA3AF;
-  }
-  
-  .settings-section {
-    background: #1F2937;
-  }
-  
-  .section-title {
-    color: #F9FAFB;
-  }
-  
-  .form-group label {
-    color: #D1D5DB;
-  }
-  
-  .form-input,
-  .form-select {
-    background: #374151;
-    border-color: #4B5563;
-    color: #F9FAFB;
-  }
-  
-  .form-input:focus,
-  .form-select:focus {
-    border-color: #3B82F6;
-  }
-  
-  .form-select {
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  }
-  
-  .toggle-title {
-    color: #F9FAFB;
-  }
-  
-  .toggle-description {
-    color: #9CA3AF;
-  }
-  
-  .toggle-switch {
-    background: #4B5563;
-  }
-  
-  .toggle-switch.active {
-    background: #3B82F6;
-  }
+/* ── Collapsed sidebar variant ───────────────────────────── */
+.sp-root--collapsed .sp-sidebar {
+  width: 68px;
+  min-width: 68px;
+  padding: 20px 8px;
 }
+.sp-root--collapsed .sp-nav-label { display: none; }
+.sp-root--collapsed .sp-nav-item  { justify-content: center; padding: 10px; }
+.sp-root--collapsed .sp-nav-icon  { width: 20px; height: 20px; }

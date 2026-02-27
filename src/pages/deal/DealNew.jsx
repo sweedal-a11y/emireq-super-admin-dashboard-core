@@ -76,7 +76,7 @@ export default function DealNew({ isDarkMode, toggleTheme, sidebarCollapsed }) {
   });
 
   return (
-    <div className="em-deal-container">
+    <div className={`em-startup-overview in-page${sidebarCollapsed ? ' em-startup-overview--sidebar-collapsed' : ''}${isDarkMode ? ' dark' : ''}`}>
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} sidebarCollapsed={sidebarCollapsed} />
       
       <main className="em-deal-main">
